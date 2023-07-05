@@ -1,58 +1,56 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity soupController is
+entity soup_controller is
 	port
 	(
 		clk, rst : in std_logic;
 		opcode   : in std_logic_vector(5 downto 0);
 		div_done : in std_logic;
 		mul_done : in std_logic;
-		cw       : out std_logic_vector(34 downto 0)
+		cw       : out std_logic_vector(36 downto 0)
 	);
-end soupController;
+end soup_controller;
 
-architecture BEHAVIORAL of soupController is
-	type StateType is (singleCycle, multiCycle);
+architecture BEHAVIORAL of soup_controller is
+	type state_type is (single_cycle, multi_cycle);
 
-	signal currState, nextState : StateType;
-	signal pc_enable            : std_logic;
+	signal curr_state, next_state : state_type;
+	signal pc_enable              : std_logic;
 begin
 	RegProc : process (clk)
 	begin
 		if (rising_edge(clk)) then
 			if (rst = '1') then
-				currState <= singleCycle;
+				curr_state <= single_cycle;
 			else
-				currState <= nextState;
+				curr_state <= next_state;
 			end if;
 		end if;
 	end process RegProc;
 
-	CombLogic: process(opcode, div_done, mul_done)
+	CombLogic : process (opcode, div_done, mul_done)
 	begin
 		pc_enable <= '1';
-		nextState <= currState;
-		case (currState) is
-			when singleCycle => 
+		next_state <= curr_state;
+		case (curr_state) is
+			when single_cycle =>
 				--TODO: HARDWIRED BEHAVIOUR
-
-
-				--switch to multicycle
+				--switch to multi_cycle
 				if ((opcode = MUL) or (opcode = DIV)) then
-					nextState <= multiCycle;
+					next_state <= multi_cycle;
 				end if;
 
-			when multiCycle => 
+			when multi_cycle =>
 				pc_enable <= '0';
 				if ((div_done = '1') or (mul_done = '1')) then
-					nextState <= singleCycle;
+					next_state <= single_cycle;
 				end if;
 
 			--it should never get to this point
-			when others => 
-				nextState <= singleCycle;
+			when others =>
+				next_state <= single_cycle;
 		end case;
 	end process CombLogic;
-	
+
 end BEHAVIORAL;
