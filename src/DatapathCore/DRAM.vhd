@@ -43,7 +43,7 @@ architecture behavioral of DRAM is
     end process read_dram;
 
     -- Process in charge of filling the dram @rst or to modify it @posedge_clock
-    write_dram: process (Rst, clk, rw_bar, addr, d_in)
+    write_dram: process (Rst, clk)
         file mem_fp: text;
         variable file_line : line;
         variable index : integer := 0;
