@@ -14,11 +14,12 @@ entity datapath is
 end datapath;
 
 architecture STRUCTURAL of datapath is
-	constant NBIT        : integer                       := 32;
-	constant NBIT_log    : integer                       := 5; --should be log2(NBIT)
-	constant nbit_zeroes : word_type                     := (others => '0');
-	constant opcode_size : integer                       := 6;
-	constant safe_cw     : std_logic_vector(30 downto 0) := "0000000000000000000000100001000";
+	constant NBIT        : integer                             := 32;
+	constant NBIT_log    : integer                             := 5; --should be log2(NBIT)
+	constant RAM_WIDTH   : integer                             := 8;
+	constant nbit_zeroes : std_logic_vector(NBIT - 1 downto 0) := (others => '0');
+	constant opcode_size : integer                             := 6;
+	constant safe_cw     : std_logic_vector(30 downto 0)       := "0000000000000000000000100001000";
 
 	subtype word_type is std_logic_vector(NBIT - 1 downto 0);
 
@@ -129,15 +130,15 @@ begin
 	ex_sel_a                <= cw_de_out(30);
 	ex_sel_b                <= cw_de_out(29);
 	alu_sub_add_bar         <= cw_de_out(28);
-	alu_logic_sel           <= cw_de_out(27 to 24);
-	alu_shift_sel           <= cw_de_out(23 to 22);
+	alu_logic_sel           <= cw_de_out(27 downto 24);
+	alu_shift_sel           <= cw_de_out(23 downto 22);
 	mul_start               <= cw_de_out(21);
 	div_start               <= cw_de_out(20);
 	div_signed_unsigned_bar <= cw_de_out(19);
 	div_sel                 <= cw_de_out(18);
 	mul_sel_p               <= cw_de_out(17);
 	cmp_config              <= cw_de_out(16 downto 14);
-	ex_sel_out              <= cw_de_out(13 to 11);
+	ex_sel_out              <= cw_de_out(13 downto 11);
 	branch_eq_neq_bar       <= cw_de_out(10);
 	em_enable               <= cw_de_out(9);
 
@@ -180,9 +181,9 @@ begin
 		Dout => mem_instr_out
 		);
 
-	opcode  <= mem_instr_out(NBIT - 1 downto NBIT - opcode_size - 1);
+	opcode  <= mem_instr_out(NBIT - 1 downto NBIT - opcode_size);
 
-	incr_pc <= std_logic_vector(unsigned(i_address) + 4);
+	incr_pc <= std_logic_vector(unsigned(i_address) + 1);
 
 	--F/D REGISTERS
 	ir_fd : entity work.pipeRegister
@@ -384,7 +385,7 @@ begin
 		port
 		map (
 		R1     => op1_mux,
-		R2     => op2_mux,
+		R2     => op2_mux(4 downto 0),
 		conf   => alu_shift_sel,
 		Result => shift_result
 		);
@@ -466,9 +467,8 @@ begin
 		data_out => jmpdest_em_out
 		);
 
-	cond : entity work.pipeRegister
+	cond : entity work.pipeRegisterOneBit
 		generic map(
-			NBIT        => 1,
 			reset_value => '0'
 		)
 		port
@@ -545,7 +545,7 @@ begin
 
 	d_mem : entity work.DRAM
 		generic map(
-			RAM_WIDTH  => 8,
+			RAM_WIDTH  => RAM_WIDTH,
 			WORD_WIDTH => NBIT
 		)
 		port
@@ -553,7 +553,7 @@ begin
 		rst    => rst,
 		clk    => clk,
 		rw_bar => mem_rd_wr_bar,
-		addr   => exeout_em_out,
+		addr   => exeout_em_out(RAM_WIDTH - 1 downto 0),
 		d_in   => b_em_out,
 		d_out  => mem_data_out
 		);
@@ -620,17 +620,18 @@ begin
 		exeout_mw_out when (wb_sel = "01") else
 		lmd_mw_out when (wb_sel = "10") else
 		nbit_zeroes;
+	
 	--CONTROL WORD REGISTERS
 	cw_de : entity work.pipeRegister
 		generic map(
 			NBIT        => 31,
-			reset_value => safe_cw
+			reset_value => safe_cw(30 downto 0)
 		)
 		port
 		map (
 		clk      => clk,
 		rst      => rst,
-		data_in  => control_word,
+		data_in  => control_word(30 downto 0),
 		enable   => single_cycle_enable,
 		data_out => cw_de_out
 		);
@@ -651,7 +652,7 @@ begin
 
 	cw_mw : entity work.pipeRegister
 		generic map(
-			NBIT        => NBIT,
+			NBIT        => 5,
 			reset_value => safe_cw(4 downto 0)
 		)
 		port

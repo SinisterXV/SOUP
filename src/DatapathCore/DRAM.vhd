@@ -43,27 +43,17 @@ architecture behavioral of DRAM is
     end process read_dram;
 
     -- Process in charge of filling the dram @rst or to modify it @posedge_clock
-    write_dram: process (Rst, clk)
-        file mem_fp: text;
-        variable file_line : line;
-        variable index : integer := 0;
-        variable tmp_data_u : word_type;
+    write_dram: process (rst, clk)
     begin 
         if (rst = '1') then
-            file_open(mem_fp,"data.mem",READ_MODE);
-            read_file : for index in 0 to (2**RAM_WIDTH - 1) loop
-                -- read one line and put it into file_line
-                readline(mem_fp,file_line);
-                -- convert text line into a std_logic_vector
-                hread(file_line,tmp_data_u);
-                -- write the memory
-                dram_memory(index) <= std_logic_vector(unsigned(tmp_data_u));       
-                -- next index
-            end loop read_file;
-            file_close(mem_fp);
+			dram_memory <= (others => (others => '0'));
         else
-            if rising_edge(clk) and rw_bar = '0' then
-                dram_memory(to_integer(unsigned(addr))) <= d_in;
+			if (rising_edge(clk)) then
+				if (rst = '1') then
+					dram_memory <= (others => (others => '0'));
+				elsif (rw_bar = '0') then
+					dram_memory(to_integer(unsigned(addr))) <= d_in;
+				end if;
             end if;
         end if;
   end process write_dram;

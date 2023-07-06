@@ -35,9 +35,9 @@ architecture behavioural of T2_shifter_generic is
     -----------------------
 
     -- Length of a mask
-    signal mask_length: integer := N+7;
+	constant mask_length: integer := N+7;
     -- Number of masks
-    signal mask_number: integer := N/8;
+	constant mask_number: integer := N/8;
     
     -----------------------
     -- Type declaration

@@ -49,7 +49,7 @@ begin
 			elsif((enable = '1') and (wr = '1')) then
 				if (write31 = '1') then
 					registers(31) <= datain;
-				else
+				elsif(unsigned(add_wr) /= 0) then --prevent writing to Regs[0]
 					registers(to_integer(unsigned(add_wr))) <= datain;
 				end if;
 			end if;
