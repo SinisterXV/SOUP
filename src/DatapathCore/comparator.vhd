@@ -36,7 +36,7 @@ begin
 					greaterThanEqual when "011",
 					equal when "100",
 					notEqual when "101",
-					'0' when others;
+					'0' when others; --it should not get to this point
 
 	output <= NBITm1zeroes & selectOut;
 	
