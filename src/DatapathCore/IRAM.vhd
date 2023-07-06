@@ -43,7 +43,7 @@ begin
             IRAM_mem(index) <= conv_integer(unsigned(tmp_data_u));       
             index := index + 1;
         end loop;
-        file_close(mem_fp),
+		file_close(mem_fp);
         end if;
     end process fill_memory;
 

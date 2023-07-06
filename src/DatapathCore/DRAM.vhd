@@ -37,10 +37,8 @@ architecture behavioral of DRAM is
     -- combinational process in charge of reading the dram 
     read_dram: process(addr, rw_bar, rst)
     begin
-        if rw_bar = '1' and rst = '0' then
+        if ((rw_bar = '1') and (rst = '0')) then
             d_out <= dram_memory(to_integer(unsigned(addr)));
-        else
-            d_out <= d_in;
         end if;
     end process read_dram;
 
@@ -51,7 +49,7 @@ architecture behavioral of DRAM is
         variable index : integer := 0;
         variable tmp_data_u : word_type;
     begin 
-        if (Rst = '1') then
+        if (rst = '1') then
             file_open(mem_fp,"data.mem",READ_MODE);
             read_file : for index in 0 to (2**RAM_WIDTH - 1) loop
                 -- read one line and put it into file_line
@@ -69,6 +67,5 @@ architecture behavioral of DRAM is
             end if;
         end if;
   end process write_dram;
-
 
 end behavioral;
