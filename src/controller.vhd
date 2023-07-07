@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity soup_controller is
+entity controller is
 	generic (
 		LUT_MEM_SIZE : integer := 45;
 		CW_SIZE      : integer := 35;
@@ -16,9 +16,9 @@ entity soup_controller is
 		single_cycle_enable : out std_logic;
 		cw                  : out std_logic_vector(CW_SIZE - 1 downto 0)
 	);
-end soup_controller;
+end controller;
 
-architecture BEHAVIORAL of soup_controller is
+architecture BEHAVIORAL of controller is
 	type state_type is (single_cycle, multi_cycle);
 
 	type LUT is array (integer range 0 to LUT_MEM_SIZE - 1) of std_logic_vector(CW_SIZE - 1 downto 0);
