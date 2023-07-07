@@ -172,18 +172,18 @@ begin
 	i_mem : entity work.IRAM
 		generic map(
 			RAM_DEPTH => 64,
-			I_SIZE    => NBIT
+			I_SIZE    => (NBIT - 2)
 		)
 		port
 		map (
 		Rst  => Rst,
-		Addr => i_address,
+		Addr => i_address(NBIT - 1 downto 2),
 		Dout => mem_instr_out
 		);
 
 	opcode  <= mem_instr_out(NBIT - 1 downto NBIT - opcode_size);
 
-	incr_pc <= std_logic_vector(unsigned(i_address) + 1);
+	incr_pc <= std_logic_vector(unsigned(i_address) + 4);
 
 	--F/D REGISTERS
 	ir_fd : entity work.pipeRegister
