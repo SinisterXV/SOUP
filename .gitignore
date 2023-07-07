@@ -1,1 +1,4 @@
 *.drawio.bkp
+**/*.list
+**/*.bin
+**/_dump.txt
