@@ -70,6 +70,7 @@ architecture BEHAVIORAL of controller is
 		"11011000000000110000010101100101101"); --srem 
 
 	signal curr_state, next_state : state_type;
+    signal curr_cw, next_cw : std_logic_vector(CW_SIZE - 1 downto 0);
 
 begin
 	RegProc : process (clk)
@@ -77,8 +78,10 @@ begin
 		if (rising_edge(clk)) then
 			if (rst = '1') then
 				curr_state <= single_cycle;
+                curr_cw <= "00000000000000000000000000100001000";
 			else
 				curr_state <= next_state;
+                curr_cw <= next_cw;
 			end if;
 		end if;
 	end process RegProc;
@@ -90,7 +93,7 @@ begin
 		case (curr_state) is
 			when single_cycle =>
 
-				cw <= cw_mem(to_integer(unsigned(opcode)));
+				next_cw <= cw_mem(to_integer(unsigned(opcode)));
 
 				--switch to multi_cycle if MUL or DIV
 				if ((opcode = x"27") or 	--smulh
@@ -116,5 +119,7 @@ begin
 				next_state <= single_cycle;
 		end case;
 	end process CombLogic;
+
+    cw <= curr_cw;
 
 end BEHAVIORAL;

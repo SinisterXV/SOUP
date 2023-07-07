@@ -138,8 +138,8 @@ if ($srcfile =~ /^(.*)\.dlx$/) {
   "subi" => "i,0x23",
   "subui" => "i,0x0b",
   "andi" => "i,0x03",
-  "nori"  => "r,0x05",
-  "nandi"  => "r,0x07",
+  "nori"  => "i,0x05",
+  "nandi"  => "i,0x07",
   "ori"  => "i,0x11",
   "xori" => "i,0x26",
   "xnori" => "i,0x09",
@@ -464,8 +464,8 @@ sub forminstr {
       $src2 = 0;
     }
     $dst = &getreg ($a[1]);
-    $out = 0x00000000 | ($src1 << 21) | ($src2 << 16) | ($dst << 11) |
-      $op;
+    $out = ($op << 26) | ($src1 << 21) | ($src2 << 16) | ($dst << 11)
+    # $out = 0x00000000 | ($src1 << 21) | ($src2 << 16) | ($dst << 11) | $op;
   } elsif ($itype eq "i") {
     $src1 = &getreg ($a[2]);
     $dst = &getreg ($a[1]);
