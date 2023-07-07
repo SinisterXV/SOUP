@@ -46,13 +46,10 @@ begin
 		control_word <= "00000000000000000000000000100001000"; --nop
 		wait for clk_period;
 
-		control_word <= "10111100000000000000000101100101001"; --addi
+		control_word <= "10111100000000000000000101100101001"; --nop
 		wait for clk_period;
 
-		control_word <= "10111100000000000000000101100101001"; --addi
-		wait for clk_period;
-
-		control_word <= "00000000000000000000000000100001000"; --nop
+		control_word <= "10111100000000000000000101100101001"; --nop
 		wait for clk_period;
 
 		control_word <= "00000000000000000000000000100001000"; --nop
@@ -64,16 +61,22 @@ begin
 		control_word <= "00000000000000000000000000100001000"; --nop
 		wait for clk_period;
 
-		control_word <= "11011000000000000000000101100101101"; --add
+		control_word <= "11011001000000000000001001100101101"; --nop
 		wait for clk_period;
 
-		control_word <= "00000000000000000000000000100001000"; --nop
+		control_word <= "11011000001000000000001001100101101"; --nop
 		wait for clk_period;
 
-		control_word <= "00000000000000000000000000100001000"; --nop
+		control_word <= "11011000111000000000001001100101101"; --nop
 		wait for clk_period;
 
-		control_word <= "00000000000000000000000000100001000"; --nop
+		control_word <= "11011001001000000000001001100101101"; --nop
+		wait for clk_period;
+
+		control_word <= "11011000110000000000001001100101101"; --nop
+		wait for clk_period;
+
+		control_word <= "11011001110000000000001001100101101"; --nop
 		wait for clk_period;
 
 		control_word <= "00000000000000000000000000100001000"; --nop

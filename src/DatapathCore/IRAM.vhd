@@ -35,7 +35,7 @@ begin
         variable tmp_data_u : std_logic_vector(I_SIZE - 1 downto 0);
     begin
         if (Rst = '0') then
-            file_open(mem_fp, "/home/pcineverdies/Documents/MicroelectronicSystems/SOUP/sim/asm_example/datapath_test_2/datapath_test_2_dump.mem", READ_MODE);
+            file_open(mem_fp, "/home/pcineverdies/Documents/MicroelectronicSystems/SOUP/sim/asm_example/datapath_test_branch/datapath_test_branch_dump.mem", READ_MODE);
             while (not endfile(mem_fp)) loop
                 readline(mem_fp, file_line);
                 hread(file_line, tmp_data_u);
