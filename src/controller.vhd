@@ -86,7 +86,7 @@ begin
 		end if;
 	end process RegProc;
 
-	CombLogic : process (opcode, div_done, mul_done)
+	CombLogic : process (curr_state, opcode, div_done, mul_done)
 	begin
 		single_cycle_enable <= '1';
 		next_state          <= curr_state;
@@ -96,12 +96,12 @@ begin
 				next_cw <= cw_mem(to_integer(unsigned(opcode)));
 
 				--switch to multi_cycle if MUL or DIV
-				if ((opcode = x"27") or 	--smulh
-					(opcode = x"28") or     --smull
-					(opcode = x"29") or     --uquot
-					(opcode = x"2A") or     --urem
-					(opcode = x"2B") or     --squot
-					(opcode = x"2C")) then  --srem
+				if ((opcode = "100111") or 	--smulh
+					(opcode = "101000") or     --smull
+					(opcode = "101001") or     --uquot
+					(opcode = "101010") or     --urem
+					(opcode = "101011") or     --squot
+					(opcode = "101100")) then  --srem
 
 					next_state <= multi_cycle;
 
