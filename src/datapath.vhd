@@ -510,7 +510,7 @@ begin
 		);
 
 	--MEMORY STAGE COMPONENTS
-	next_pc <= next_pc when ((mem_perform_jump or ((mem_branch_enable and cond_out)) = '1'));
+	next_pc <= next_pc when ((mem_perform_jump or ((mem_branch_enable and cond_out))) = '1')
 
 	d_mem : entity work.DRAM
 		generic map(
