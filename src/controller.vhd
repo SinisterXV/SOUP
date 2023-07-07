@@ -71,6 +71,7 @@ architecture BEHAVIORAL of controller is
 
 	signal curr_state, next_state : state_type;
     signal curr_cw, next_cw : std_logic_vector(CW_SIZE - 1 downto 0);
+    signal curr_counter, next_counter: std_logic;
 
 begin
 	RegProc : process (clk)
@@ -79,33 +80,40 @@ begin
 			if (rst = '1') then
 				curr_state <= single_cycle;
                 curr_cw <= "000000000000000000000000000100001000";
+                curr_counter <= '0';
 			else
 				curr_state <= next_state;
                 curr_cw <= next_cw;
+                curr_counter <= next_counter;
 			end if;
 		end if;
 	end process RegProc;
 
-	CombLogic : process (curr_state, opcode, div_done, mul_done)
+	CombLogic : process (curr_state, opcode, div_done, mul_done, curr_counter)
 	begin
 		single_cycle_enable <= '1';
 		next_state          <= curr_state;
+        next_counter        <= curr_counter;
 		case (curr_state) is
 			when single_cycle =>
 
 				next_cw <= cw_mem(to_integer(unsigned(opcode)));
 
 				--switch to multi_cycle if MUL or DIV
-				if ((opcode = "100111") or 	--smulh
+				if ((opcode = "100111") or 	   --smulh
 					(opcode = "101000") or     --smull
 					(opcode = "101001") or     --uquot
 					(opcode = "101010") or     --urem
 					(opcode = "101011") or     --squot
 					(opcode = "101100")) then  --srem
 
-					next_state <= multi_cycle;
+                    next_counter <= '1';
 
 				end if;
+
+                if (curr_counter = '1') then
+                    next_state <= multi_cycle;
+                end if;
 
 			when multi_cycle =>
 				single_cycle_enable <= '0';
@@ -113,6 +121,8 @@ begin
 				if ((div_done = '1') or (mul_done = '1')) then
 					next_state <= single_cycle;
 				end if;
+
+                next_counter <= '0';
 
 			--it should never get to this point
 			when others =>

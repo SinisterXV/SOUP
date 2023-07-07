@@ -15,7 +15,7 @@ add r3, r1, r2
 
 label:
 and r3, r2, r1
-j label_2
+jal label_2
 nop
 nop
 nop
@@ -24,7 +24,6 @@ nop
 sub r3, r2, r1
 
 label_2:
-bnez r2, label 
 nop
 nop
 nop
