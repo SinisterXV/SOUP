@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 entity controller is
 	generic (
 		LUT_MEM_SIZE : integer := 45;
-		CW_SIZE      : integer := 35;
+		CW_SIZE      : integer := 36;
 		OPCODE_SIZE  : integer := 6);
 	port
 	(

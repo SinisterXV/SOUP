@@ -6,7 +6,7 @@ entity datapath is
 	port
 	(
 		clk, rst            : in std_logic;
-		control_word        : in std_logic_vector(34 downto 0);
+		control_word        : in std_logic_vector(35 downto 0);
 		single_cycle_enable : in std_logic;
 		opcode              : out std_logic_vector(5 downto 0);
 		mul_done, div_done  : out std_logic
@@ -19,7 +19,7 @@ architecture STRUCTURAL of datapath is
 	constant RAM_WIDTH   : integer                             := 8;
 	constant nbit_zeroes : std_logic_vector(NBIT - 1 downto 0) := (others => '0');
 	constant opcode_size : integer                             := 6;
-	constant safe_cw     : std_logic_vector(30 downto 0)       := "0000000000000000000000100001000";
+	constant safe_cw     : std_logic_vector(31 downto 0)       := "00000000000000000000000100001000";
 
 	subtype word_type is std_logic_vector(NBIT - 1 downto 0);
 
@@ -27,6 +27,7 @@ architecture STRUCTURAL of datapath is
 	--DECODE STAGE
 	signal rf_rd1                  : std_logic;
 	signal rf_rd2                  : std_logic;
+	signal se_size_16_26_bar       : std_logic;
 	signal se_signed_unsigned_bar  : std_logic;
 	signal de_enable               : std_logic;
 
@@ -67,8 +68,6 @@ architecture STRUCTURAL of datapath is
 	signal npc_fd_out              : word_type;
 
 	--DECODE STAGE
-	signal next_jmpdest_de         : word_type;
-	signal jmpdest_de_out          : word_type;
 	signal rf_out1                 : word_type;
 	signal rf_out2                 : word_type;
 	signal rf_dest_mux             : std_logic_vector(4 downto 0);
@@ -96,7 +95,6 @@ architecture STRUCTURAL of datapath is
 	signal div_mux                 : word_type;
 	signal exeout_mux              : word_type;
 	signal zero_detector_result    : std_logic;
-	signal jmpdest_em_out          : word_type;
 	signal cond_out                : std_logic;
 	signal npc_em_out              : word_type;
 	signal exeout_em_out           : word_type;
@@ -104,7 +102,6 @@ architecture STRUCTURAL of datapath is
 	signal ir_em_out               : word_type;
 
 	--MEMORY STAGE
-	signal jmp_mux                 : word_type;
 	signal mem_data_out            : word_type;
 	signal npc_mw_out              : word_type;
 	signal exeout_mw_out           : word_type;
@@ -121,9 +118,10 @@ architecture STRUCTURAL of datapath is
 begin
 	--CONTROL WORD DECOMPOSITION
 	--DECODE STAGE
-	rf_rd1                  <= control_word(34);
-	rf_rd2                  <= control_word(33);
-	se_signed_unsigned_bar  <= control_word(32);
+	rf_rd1                  <= control_word(35);
+	rf_rd2                  <= control_word(34);
+	se_signed_unsigned_bar  <= control_word(33);
+	se_size_16_26_bar       <= control_word(32);
 	de_enable               <= control_word(31);
 
 	--EXECUTION STAGE
@@ -169,9 +167,9 @@ begin
 			data_out => i_address
 		);
 
-    -- RAM_DEPTH is the address width of the IRAM.
-    -- IRAM is not byte-addreassble, but the PC assumes it is. 
-    -- For this reason, we cut the two LSBs of the PC.
+	-- RAM_DEPTH is the address width of the IRAM.
+	-- IRAM is not byte-addreassble, but the PC assumes it is. 
+	-- For this reason, we cut the two LSBs of the PC.
 	i_mem : entity work.IRAM
 		generic map(
 			RAM_DEPTH => 6,
@@ -218,9 +216,7 @@ begin
 		);
 
 	--DECODE STAGE COMPONENTS
-	next_jmpdest_de <= std_logic_vector(unsigned(npc_fd_out) + unsigned(ir_fd_out(25 downto 0)));
-
-	rf_dest_mux     <= ir_mw_out(20 downto 16) when (rf_sel_dest = '0') else
+	rf_dest_mux <= ir_mw_out(20 downto 16) when (rf_sel_dest = '0') else
 		ir_mw_out(15 downto 11);
 
 	rf : entity work.register_file
@@ -247,26 +243,14 @@ begin
 	se : entity work.sign_extender
 		port
 		map (
-		immediate           => ir_fd_out(15 downto 0),
+		immediate16         => ir_fd_out(15 downto 0),
+		immediate26         => ir_fd_out(25 downto 0),
+		size_16_26_bar      => se_size_16_26_bar,
 		signed_unsigned_bar => se_signed_unsigned_bar,
 		result              => se_out
 		);
 
 	--D/E REGISTERS
-	jmpdest_de : entity work.pipeRegister
-		generic map(
-			NBIT        => NBIT,
-			reset_value => nbit_zeroes
-		)
-		port
-		map (
-		clk      => clk,
-		rst      => rst,
-		data_in  => next_jmpdest_de,
-		enable   => de_enable,
-		data_out => jmpdest_de_out
-		);
-
 	npc_de : entity work.pipeRegister
 		generic map(
 			NBIT        => NBIT,
@@ -456,20 +440,6 @@ begin
 		nbit_zeroes;
 
 	--E/M REGISTERS
-	jmpdest_em : entity work.pipeRegister
-		generic map(
-			NBIT        => NBIT,
-			reset_value => nbit_zeroes
-		)
-		port
-		map (
-		clk      => clk,
-		rst      => rst,
-		data_in  => jmpdest_de_out,
-		enable   => em_enable,
-		data_out => jmpdest_em_out
-		);
-
 	cond : entity work.pipeRegisterOneBit
 		generic map(
 			reset_value => '0'
@@ -540,11 +510,7 @@ begin
 		);
 
 	--MEMORY STAGE COMPONENTS
-	jmp_mux <= exeout_em_out when ((cond_out and mem_branch_enable) = '1') else
-		incr_pc;
-
-	next_pc <= jmp_mux when (mem_perform_jump = '0') else
-		jmpdest_em_out;
+	next_pc <= next_pc when ((mem_perform_jump or ((mem_branch_enable and cond_out)) = '1'));
 
 	d_mem : entity work.DRAM
 		generic map(
@@ -623,7 +589,7 @@ begin
 		exeout_mw_out when (wb_sel = "01") else
 		lmd_mw_out when (wb_sel = "10") else
 		nbit_zeroes;
-	
+
 	--CONTROL WORD REGISTERS
 	cw_de : entity work.pipeRegister
 		generic map(
