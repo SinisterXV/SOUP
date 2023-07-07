@@ -169,15 +169,18 @@ begin
 			data_out => i_address
 		);
 
+    -- RAM_DEPTH is the address width of the IRAM.
+    -- IRAM is not byte-addreassble, but the PC assumes it is. 
+    -- For this reason, we cut the two LSBs of the PC.
 	i_mem : entity work.IRAM
 		generic map(
-			RAM_DEPTH => 64,
-			I_SIZE    => (NBIT - 2)
+			RAM_DEPTH => 6,
+			I_SIZE    => NBIT
 		)
 		port
 		map (
 		Rst  => Rst,
-		Addr => i_address(NBIT - 1 downto 2),
+		Addr => i_address(7 downto 2),
 		Dout => mem_instr_out
 		);
 

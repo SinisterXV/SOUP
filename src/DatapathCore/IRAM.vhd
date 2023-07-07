@@ -14,14 +14,14 @@ entity IRAM is
     port
     (
         Rst  : in std_logic;
-        Addr : in std_logic_vector(I_SIZE - 1 downto 0);
+        Addr : in std_logic_vector(RAM_DEPTH - 1 downto 0);
         Dout : out std_logic_vector(I_SIZE - 1 downto 0)
     );
 end IRAM;
 
 architecture behavioral of IRAM is
 
-    type RAMtype is array (0 to RAM_DEPTH - 1) of std_logic_vector(I_SIZE - 1 downto 0);
+    type RAMtype is array (0 to 2**RAM_DEPTH - 1) of std_logic_vector(I_SIZE - 1 downto 0);
     signal IRAM_mem : RAMtype;
 
 begin
@@ -35,7 +35,7 @@ begin
         variable tmp_data_u : std_logic_vector(I_SIZE - 1 downto 0);
     begin
         if (Rst = '0') then
-            file_open(mem_fp, "/home/pcineverdies/Documents/MicroelectronicSystems/SOUP/sim/asm_example/datapath_test/datapath_test_dump.mem", READ_MODE);
+            file_open(mem_fp, "/home/pcineverdies/Documents/MicroelectronicSystems/SOUP/sim/asm_example/datapath_test_2/datapath_test_2_dump.mem", READ_MODE);
             while (not endfile(mem_fp)) loop
                 readline(mem_fp, file_line);
                 hread(file_line, tmp_data_u);
