@@ -12,6 +12,7 @@ architecture STRUCTURAL of dlx is
 	signal opcode              : std_logic_vector(5 downto 0);
 	signal div_done            : std_logic;
 	signal mul_done            : std_logic;
+	signal invalid_div         : std_logic;
 	signal single_cycle_enable : std_logic;
 	signal control_word        : std_logic_vector(35 downto 0);
 begin
@@ -23,6 +24,7 @@ begin
 			opcode              => opcode,
 			div_done            => div_done,
 			mul_done            => mul_done,
+			invalid_div         => invalid_div,
 			single_cycle_enable => single_cycle_enable,
 			cw                  => control_word
 		);
@@ -36,6 +38,7 @@ begin
 		single_cycle_enable => single_cycle_enable,
 		opcode              => opcode,
 		mul_done            => mul_done,
-		div_done            => div_done
+		div_done            => div_done,
+		invalid_div         => invalid_div
 		);
 end architecture;

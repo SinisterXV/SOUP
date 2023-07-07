@@ -13,6 +13,7 @@ entity controller is
 		opcode              : in std_logic_vector(OPCODE_SIZE - 1 downto 0);
 		div_done            : in std_logic;
 		mul_done            : in std_logic;
+		invalid_div         : in std_logic;
 		single_cycle_enable : out std_logic;
 		cw                  : out std_logic_vector(CW_SIZE - 1 downto 0)
 	);
@@ -118,7 +119,7 @@ begin
 			when multi_cycle =>
 				single_cycle_enable <= '0';
 
-				if ((div_done = '1') or (mul_done = '1')) then
+				if ((div_done = '1') or (mul_done = '1') or (invalid_div = '1')) then
 					next_state <= single_cycle;
 				end if;
 
@@ -130,6 +131,6 @@ begin
 		end case;
 	end process CombLogic;
 
-    cw <= curr_cw;
+	cw <= curr_cw;
 
 end BEHAVIORAL;

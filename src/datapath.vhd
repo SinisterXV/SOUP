@@ -9,7 +9,8 @@ entity datapath is
 		control_word        : in std_logic_vector(35 downto 0);
 		single_cycle_enable : in std_logic;
 		opcode              : out std_logic_vector(5 downto 0);
-		mul_done, div_done  : out std_logic
+		mul_done, div_done  : out std_logic;
+		invalid_div         : out std_logic
 	);
 end datapath;
 
@@ -408,7 +409,7 @@ begin
 		dividend          => op1_mux,
 		divisor           => op2_mux,
 		donesdiv          => div_done,
-		dividedbyzeroflag => open,
+		dividedbyzeroflag => invalid_div,
 		qout              => div_quot,
 		remout            => div_rem
 		);
