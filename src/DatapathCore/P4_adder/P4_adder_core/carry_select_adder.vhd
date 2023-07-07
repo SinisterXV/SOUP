@@ -34,11 +34,3 @@ begin
 	S <= carry0_RCA_Output when Ci = '0' else carry1_RCA_Output;
 
 end STRUCTURAL;
-
-configuration CFG_CSB_STRUCTURAL of CSB is
-	for STRUCTURAL
-		for all: RCA
-			use configuration WORK.CFG_RCA_STRUCTURAL;
-		end for;
-	end for;
-end CFG_CSB_STRUCTURAL;

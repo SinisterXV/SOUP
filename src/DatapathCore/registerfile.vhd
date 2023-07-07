@@ -56,8 +56,3 @@ begin
 		end if;
 	end process writeproc;
 end a;
-
-configuration cfg_rf_beh of register_file is
-	for a
-	end for;
-end configuration;
