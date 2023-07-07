@@ -218,7 +218,7 @@ begin
 		);
 
 	--DECODE STAGE COMPONENTS
-	next_jmpdest_de <= npc_fd_out(NBIT - 1 downto NBIT - 4) & ir_fd_out(25 downto 0) & "00";
+	next_jmpdest_de <= std_logic_vector(unsigned(npc_fd_out) + unsigned(ir_fd_out(25 downto 0)));
 
 	rf_dest_mux     <= ir_mw_out(20 downto 16) when (rf_sel_dest = '0') else
 		ir_mw_out(15 downto 11);
