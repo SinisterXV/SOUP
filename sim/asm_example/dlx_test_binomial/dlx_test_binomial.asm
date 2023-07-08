@@ -6,11 +6,13 @@
 ; B = K * K-1 * K-2 * ... * 1
 ; R = A / B
 
+; IMPLEMENTATION:
 ; int A = 1, B = 1
 ; for(int i = N; i != N-K; i--) A = A * i;
 ; for(int i = K; i !=   1; i--) B = B * i;
 ; R = A / B
 
+; Initialization
 addi r1, r0, 17
 addi r2, r0, 8
 nop
@@ -78,6 +80,11 @@ nop
 
 end_loop_B:
 uquot r20, r10, r11
+nop
+nop
+nop
+nop
+sw 4(r0), r20
 nop
 nop
 nop
