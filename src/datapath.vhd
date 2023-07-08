@@ -20,7 +20,7 @@ architecture STRUCTURAL of datapath is
 	constant RAM_WIDTH   : integer                             := 8;
 	constant nbit_zeroes : std_logic_vector(NBIT - 1 downto 0) := (others => '0');
 	constant opcode_size : integer                             := 6;
-	constant safe_cw     : std_logic_vector(31 downto 0)       := "00000000000000000000000100001000";
+	constant safe_cw     : std_logic_vector(35 downto 0)       := "000100000000000000000000000100001000";
 
 	subtype word_type is std_logic_vector(NBIT - 1 downto 0);
 
@@ -113,6 +113,7 @@ architecture STRUCTURAL of datapath is
 	signal rf_data_in              : word_type;
 
 	--CONTROL WORD REGISTERS
+	signal cw_fd_out               : std_logic_vector(35 downto 0);
 	signal cw_de_out               : std_logic_vector(30 downto 0);
 	signal cw_em_out               : std_logic_vector(8 downto 0);
 	signal cw_mw_out               : std_logic_vector(4 downto 0);
@@ -593,6 +594,20 @@ begin
 		nbit_zeroes;
 
 	--CONTROL WORD REGISTERS
+	cw_fd : entity work.pipeRegister
+		generic map(
+			NBIT        => 36,
+			reset_value => safe_cw
+		)
+		port
+		map (
+		clk      => clk,
+		rst      => rst,
+		data_in  => control_word,
+		enable   => single_cycle_enable,
+		data_out => cw_fd_out
+		);
+	
 	cw_de : entity work.pipeRegister
 		generic map(
 			NBIT        => 31,
@@ -602,7 +617,7 @@ begin
 		map (
 		clk      => clk,
 		rst      => rst,
-		data_in  => control_word(30 downto 0),
+		data_in  => cw_fd_out(30 downto 0),
 		enable   => single_cycle_enable,
 		data_out => cw_de_out
 		);
