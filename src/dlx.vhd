@@ -15,7 +15,7 @@ architecture STRUCTURAL of dlx is
 	signal invalid_div         : std_logic;
 	signal single_cycle_enable : std_logic;
 	signal pc_enable           : std_logic;
-	signal control_word        : std_logic_vector(35 downto 0);
+	signal control_word        : std_logic_vector(32 downto 0);
 begin
 	cntrl : entity work.controller
 		port map

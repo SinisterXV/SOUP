@@ -6,7 +6,7 @@ entity datapath is
 	port
 	(
 		clk, rst            : in std_logic;
-		control_word        : in std_logic_vector(35 downto 0);
+		control_word        : in std_logic_vector(32 downto 0);
 		pc_enable           : in std_logic;
 		single_cycle_enable : in std_logic;
 		opcode              : out std_logic_vector(5 downto 0);
@@ -21,7 +21,7 @@ architecture STRUCTURAL of datapath is
 	constant RAM_WIDTH   : integer                             := 8;
 	constant nbit_zeroes : std_logic_vector(NBIT - 1 downto 0) := (others => '0');
 	constant opcode_size : integer                             := 6;
-	constant safe_cw     : std_logic_vector(35 downto 0)       := "000100000000000000000000000100001000";
+	constant safe_cw     : std_logic_vector(32 downto 0)       := "000100000000000000000000010001000";
 
 	subtype word_type is std_logic_vector(NBIT - 1 downto 0);
 
@@ -31,7 +31,6 @@ architecture STRUCTURAL of datapath is
 	signal rf_rd2                  : std_logic;
 	signal se_size_16_26_bar       : std_logic;
 	signal se_signed_unsigned_bar  : std_logic;
-	signal de_enable               : std_logic;
 
 	--EXECUTE STAGE
 	signal ex_sel_a                : std_logic;
@@ -47,13 +46,11 @@ architecture STRUCTURAL of datapath is
 	signal cmp_config              : std_logic_vector(2 downto 0);
 	signal ex_sel_out              : std_logic_vector(2 downto 0);
 	signal branch_eq_neq_bar       : std_logic;
-	signal em_enable               : std_logic;
 
 	--MEMORY STAGE
 	signal mem_rd_wr_bar           : std_logic;
 	signal mem_branch_enable       : std_logic;
 	signal mem_perform_jump        : std_logic;
-	signal mw_enable               : std_logic;
 
 	--WRITEBACK STAGE
 	signal wb_sel                  : std_logic_vector(1 downto 0);
@@ -114,40 +111,37 @@ architecture STRUCTURAL of datapath is
 	signal rf_data_in              : word_type;
 
 	--CONTROL WORD REGISTERS
-	signal cw_fd_out               : std_logic_vector(35 downto 0);
-	signal cw_de_out               : std_logic_vector(30 downto 0);
-	signal cw_em_out               : std_logic_vector(8 downto 0);
+	signal cw_fd_out               : std_logic_vector(32 downto 0);
+	signal cw_de_out               : std_logic_vector(28 downto 0);
+	signal cw_em_out               : std_logic_vector(7 downto 0);
 	signal cw_mw_out               : std_logic_vector(4 downto 0);
 begin
 	--CONTROL WORD DECOMPOSITION
 	--DECODE STAGE
-	rf_rd1                  <= cw_fd_out(35);
-	rf_rd2                  <= cw_fd_out(34);
-	se_signed_unsigned_bar  <= cw_fd_out(33);
-	se_size_16_26_bar       <= cw_fd_out(32);
-	de_enable               <= cw_fd_out(31);
+	rf_rd1                  <= cw_fd_out(32);
+	rf_rd2                  <= cw_fd_out(31);
+	se_signed_unsigned_bar  <= cw_fd_out(30);
+	se_size_16_26_bar       <= cw_fd_out(29);
 
 	--EXECUTION STAGE
-	ex_sel_a                <= cw_de_out(30);
-	ex_sel_b                <= cw_de_out(29);
-	alu_sub_add_bar         <= cw_de_out(28);
-	alu_logic_sel           <= cw_de_out(27 downto 24);
-	alu_shift_sel           <= cw_de_out(23 downto 22);
-	mul_start               <= cw_de_out(21);
-	div_start               <= cw_de_out(20);
-	div_signed_unsigned_bar <= cw_de_out(19);
-	div_sel                 <= cw_de_out(18);
-	mul_sel_p               <= cw_de_out(17);
-	cmp_config              <= cw_de_out(16 downto 14);
-	ex_sel_out              <= cw_de_out(13 downto 11);
-	branch_eq_neq_bar       <= cw_de_out(10);
-	em_enable               <= cw_de_out(9);
+	ex_sel_a                <= cw_de_out(28);
+	ex_sel_b                <= cw_de_out(27);
+	alu_sub_add_bar         <= cw_de_out(26);
+	alu_logic_sel           <= cw_de_out(25 downto 22);
+	alu_shift_sel           <= cw_de_out(21 downto 20);
+	mul_start               <= cw_de_out(19);
+	div_start               <= cw_de_out(18);
+	div_signed_unsigned_bar <= cw_de_out(17);
+	div_sel                 <= cw_de_out(16);
+	mul_sel_p               <= cw_de_out(15);
+	cmp_config              <= cw_de_out(14 downto 12);
+	ex_sel_out              <= cw_de_out(11 downto 9);
+	branch_eq_neq_bar       <= cw_de_out(8);
 
 	--MEMORY STAGE
-	mem_rd_wr_bar           <= cw_em_out(8);
-	mem_branch_enable       <= cw_em_out(7);
-	mem_perform_jump        <= cw_em_out(6);
-	mw_enable               <= cw_em_out(5);
+	mem_rd_wr_bar           <= cw_em_out(7);
+	mem_branch_enable       <= cw_em_out(6);
+	mem_perform_jump        <= cw_em_out(5);
 
 	--WRITEBACK STAGE
 	wb_sel                  <= cw_mw_out(4 downto 3);
@@ -264,7 +258,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => npc_fd_out,
-		enable   => de_enable,
+		enable   => single_cycle_enable,
 		data_out => npc_de_out
 		);
 
@@ -278,7 +272,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => rf_out1,
-		enable   => de_enable,
+		enable   => single_cycle_enable,
 		data_out => a_de_out
 		);
 
@@ -292,7 +286,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => rf_out2,
-		enable   => de_enable,
+		enable   => single_cycle_enable,
 		data_out => b_de_out
 		);
 
@@ -306,7 +300,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => se_out,
-		enable   => de_enable,
+		enable   => single_cycle_enable,
 		data_out => im_de_out
 		);
 
@@ -452,7 +446,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => zero_detector_result,
-		enable   => em_enable,
+		enable   => single_cycle_enable,
 		data_out => cond_out
 		);
 
@@ -466,7 +460,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => npc_de_out,
-		enable   => em_enable,
+		enable   => single_cycle_enable,
 		data_out => npc_em_out
 		);
 
@@ -480,7 +474,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => exeout_mux,
-		enable   => em_enable,
+		enable   => single_cycle_enable,
 		data_out => exeout_em_out
 		);
 
@@ -494,7 +488,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => b_de_out,
-		enable   => em_enable,
+		enable   => single_cycle_enable,
 		data_out => b_em_out
 		);
 
@@ -542,7 +536,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => npc_em_out,
-		enable   => mw_enable,
+		enable   => single_cycle_enable,
 		data_out => npc_mw_out
 		);
 
@@ -556,7 +550,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => exeout_em_out,
-		enable   => mw_enable,
+		enable   => single_cycle_enable,
 		data_out => exeout_mw_out
 		);
 
@@ -570,7 +564,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => mem_data_out,
-		enable   => mw_enable,
+		enable   => single_cycle_enable,
 		data_out => lmd_mw_out
 		);
 
@@ -595,17 +589,18 @@ begin
 		nbit_zeroes;
 
 	--CONTROL WORD REGISTERS
-	cw_fd: entity work.pipeRegister
-		generic map (
+	cw_fd : entity work.pipeRegister
+		generic map(
 			NBIT        => 36,
 			reset_value => safe_cw
 		)
-		port map (
-			clk      => clk,
-			rst      => rst,
-			data_in  => control_word,
-			enable   => single_cycle_enable,
-			data_out => cw_fd_out
+		port
+		map (
+		clk      => clk,
+		rst      => rst,
+		data_in  => control_word,
+		enable   => single_cycle_enable,
+		data_out => cw_fd_out
 		);
 
 	cw_de : entity work.pipeRegister
