@@ -32,7 +32,7 @@ begin
 		rst <= '1';
 		wait for clk_period;
 		rst <= '0';
-        wait for 100*clk_period;
+        wait for 1000*clk_period;
         rst <= '1';
 		wait;
 

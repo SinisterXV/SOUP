@@ -173,13 +173,13 @@ begin
 	-- For this reason, we cut the two LSBs of the PC.
 	i_mem : entity work.IRAM
 		generic map(
-			RAM_DEPTH => 6,
+			RAM_DEPTH => 8,
 			I_SIZE    => NBIT
 		)
 		port
 		map (
 		Rst  => Rst,
-		Addr => i_address(7 downto 2),
+		Addr => i_address(9 downto 2),
 		Dout => mem_instr_out
 		);
 
