@@ -129,6 +129,7 @@ if ($srcfile =~ /^(.*)\.dlx$/) {
 # General instructions
   "j"    => "j,0x0C",
   "jal"  => "j,0x0D",
+  "ret"  => "b, 0x2D"
   "beqz" => "b,0x0A",
   "bnez" => "b,0x0B",
   "bfpt" => "b0,0x06",
