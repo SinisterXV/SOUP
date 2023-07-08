@@ -129,7 +129,7 @@ if ($srcfile =~ /^(.*)\.dlx$/) {
 # General instructions
   "j"    => "j,0x0C",
   "jal"  => "j,0x0D",
-  "ret"  => "b, 0x2D"
+  "ret"  => "q,0x2D",
   "beqz" => "b,0x0A",
   "bnez" => "b,0x0B",
   "bfpt" => "b0,0x06",
@@ -457,6 +457,10 @@ sub forminstr {
     warn "Illegal instruction ($a[0]) at line $lineno\n";
   }
   $op = hex ($op);
+  if ($itype eq "q") { 
+    $src1 = &getreg ($a[1]);
+    $out = ($op << 26) | ($src1 << 21);
+  }
   if ($itype =~ /^r/) {
     $src1 = &getreg ($a[2]);
     if ($itype eq "r") {

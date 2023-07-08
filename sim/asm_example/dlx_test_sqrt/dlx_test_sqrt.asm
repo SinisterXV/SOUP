@@ -99,7 +99,7 @@ nop
 nop
 
 end_loop_2:
-sw 255(r0), r2
+sw 0(r0), r2
 nop
 nop
 nop

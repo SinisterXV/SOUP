@@ -30,7 +30,7 @@ begin
 	process
 	begin
 		rst <= '1';
-		wait for clk_period;
+		wait for 2*clk_period;
 		rst <= '0';
         wait for 1000*clk_period;
         rst <= '1';
