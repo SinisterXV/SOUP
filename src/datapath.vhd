@@ -318,7 +318,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => ir_fd_out,
-		enable   => de_enable and single_cycle_enable,
+		enable   => single_cycle_enable,
 		data_out => ir_de_out
 		);
 
@@ -506,7 +506,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => ir_de_out,
-		enable   => em_enable,
+		enable   => single_cycle_enable,
 		data_out => ir_em_out
 		);
 
@@ -582,7 +582,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => ir_em_out,
-		enable   => mw_enable,
+		enable   => single_cycle_enable,
 		data_out => ir_mw_out
 		);
 

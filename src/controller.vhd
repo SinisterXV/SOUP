@@ -117,6 +117,8 @@ begin
                 end if;
 
 			when multi_cycle =>
+             
+				next_cw <= cw_mem(to_integer(unsigned(opcode)));
 
 				if ((div_done = '1') or (mul_done = '1') or (invalid_div = '1')) then
 					next_state <= single_cycle;
