@@ -43,7 +43,7 @@ begin
 
 	writeproc: process(registers, clk, reset, enable, wr, write31, add_wr, datain)
 	begin
-		if(rising_edge(clk)) then
+		if(falling_edge(clk)) then
 			if(reset = '1') then
 				registers <= (others => (others => '0'));
 			elsif((enable = '1') and (wr = '1')) then
