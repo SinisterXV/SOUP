@@ -128,6 +128,7 @@ begin
 					single_cycle_enable <= '1';
 					pc_enable           <= '1';
 				else
+                    pc_enable           <= '0';
 					single_cycle_enable <= '0';
 				end if;
 
