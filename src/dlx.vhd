@@ -14,6 +14,7 @@ architecture STRUCTURAL of dlx is
 	signal mul_done            : std_logic;
 	signal invalid_div         : std_logic;
 	signal single_cycle_enable : std_logic;
+	signal pc_enable           : std_logic;
 	signal control_word        : std_logic_vector(35 downto 0);
 begin
 	cntrl : entity work.controller
@@ -25,6 +26,7 @@ begin
 			div_done            => div_done,
 			mul_done            => mul_done,
 			invalid_div         => invalid_div,
+			pc_enable           => pc_enable,
 			single_cycle_enable => single_cycle_enable,
 			cw                  => control_word
 		);
@@ -35,6 +37,7 @@ begin
 		clk                 => clk,
 		rst                 => rst,
 		control_word        => control_word,
+		pc_enable           => pc_enable,
 		single_cycle_enable => single_cycle_enable,
 		opcode              => opcode,
 		mul_done            => mul_done,

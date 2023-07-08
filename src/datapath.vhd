@@ -7,6 +7,7 @@ entity datapath is
 	(
 		clk, rst            : in std_logic;
 		control_word        : in std_logic_vector(35 downto 0);
+		pc_enable           : in std_logic;
 		single_cycle_enable : in std_logic;
 		opcode              : out std_logic_vector(5 downto 0);
 		mul_done, div_done  : out std_logic;
@@ -164,7 +165,7 @@ begin
 			clk      => clk,
 			rst      => rst,
 			data_in  => next_pc,
-			enable   => single_cycle_enable,
+			enable   => pc_enable,
 			data_out => i_address
 		);
 

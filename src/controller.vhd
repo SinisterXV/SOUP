@@ -14,6 +14,7 @@ entity controller is
 		div_done            : in std_logic;
 		mul_done            : in std_logic;
 		invalid_div         : in std_logic;
+		pc_enable           : out std_logic;
 		single_cycle_enable : out std_logic;
 		cw                  : out std_logic_vector(CW_SIZE - 1 downto 0)
 	);
@@ -70,66 +71,69 @@ architecture BEHAVIORAL of controller is
 		"110111000000000111000010101100101101",  --squot
 		"110111000000000110000010101100101101"); --srem 
 
-	signal curr_state, next_state : state_type;
-    signal curr_cw, next_cw : std_logic_vector(CW_SIZE - 1 downto 0);
-    signal curr_counter, next_counter: std_logic;
+	signal curr_state, next_state     : state_type;
+	signal curr_cw, next_cw           : std_logic_vector(CW_SIZE - 1 downto 0);
+	signal curr_counter, next_counter : std_logic;
 
 begin
 	RegProc : process (clk)
 	begin
 		if (rising_edge(clk)) then
 			if (rst = '1') then
-				curr_state <= single_cycle;
-                curr_cw <= "000000000000000000000000000100001000";
-                curr_counter <= '0';
+				curr_state   <= single_cycle;
+				curr_cw      <= "000000000000000000000000000100001000";
+				curr_counter <= '0';
 			else
-				curr_state <= next_state;
-                curr_cw <= next_cw;
-                curr_counter <= next_counter;
+				curr_state   <= next_state;
+				curr_cw      <= next_cw;
+				curr_counter <= next_counter;
 			end if;
 		end if;
 	end process RegProc;
 
 	CombLogic : process (curr_state, opcode, div_done, mul_done, curr_counter)
 	begin
+		pc_enable           <= '1';
 		single_cycle_enable <= '1';
 		next_state          <= curr_state;
-        next_counter        <= curr_counter;
+		next_counter        <= curr_counter;
 		case (curr_state) is
 			when single_cycle =>
 
 				next_cw <= cw_mem(to_integer(unsigned(opcode)));
 
 				--switch to multi_cycle if MUL or DIV
-				if ((opcode = "100111") or 	   --smulh
+				if ((opcode = "100111") or --smulh
 					(opcode = "101000") or     --smull
 					(opcode = "101001") or     --uquot
 					(opcode = "101010") or     --urem
 					(opcode = "101011") or     --squot
 					(opcode = "101100")) then  --srem
 
-                    next_counter <= '1';
+					next_counter <= '1';
 
 				end if;
 
-                if (curr_counter = '1') then
-                    next_state <= multi_cycle;
-                end if;
+				if (curr_counter = '1') then
+					pc_enable  <= '0';
+					next_state <= multi_cycle;
+				end if;
 
 			when multi_cycle =>
-             
+
 				next_cw <= cw_mem(to_integer(unsigned(opcode)));
 
 				if ((div_done = '1') or (mul_done = '1') or (invalid_div = '1')) then
-					next_state <= single_cycle;
-				    single_cycle_enable <= '1';
-                else
-				    single_cycle_enable <= '0';
+					next_state          <= single_cycle;
+					single_cycle_enable <= '1';
+					pc_enable           <= '1';
+				else
+					single_cycle_enable <= '0';
 				end if;
 
-                next_counter <= '0';
+				next_counter <= '0';
 
-			--it should never get to this point
+				--it should never get to this point
 			when others =>
 				next_state <= single_cycle;
 		end case;
