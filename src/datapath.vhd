@@ -591,7 +591,7 @@ begin
 	--CONTROL WORD REGISTERS
 	cw_fd : entity work.pipeRegister
 		generic map(
-			NBIT        => 36,
+			NBIT        => 33,
 			reset_value => safe_cw
 		)
 		port
@@ -605,28 +605,28 @@ begin
 
 	cw_de : entity work.pipeRegister
 		generic map(
-			NBIT        => 31,
-			reset_value => safe_cw(30 downto 0)
+			NBIT        => 29,
+			reset_value => safe_cw(28 downto 0)
 		)
 		port
 		map (
 		clk      => clk,
 		rst      => rst,
-		data_in  => cw_fd_out(30 downto 0),
+		data_in  => cw_fd_out(28 downto 0),
 		enable   => single_cycle_enable,
 		data_out => cw_de_out
 		);
 
 	cw_em : entity work.pipeRegister
 		generic map(
-			NBIT        => 9,
-			reset_value => safe_cw(8 downto 0)
+			NBIT        => 8,
+			reset_value => safe_cw(7 downto 0)
 		)
 		port
 		map (
 		clk      => clk,
 		rst      => rst,
-		data_in  => cw_de_out(8 downto 0),
+		data_in  => cw_de_out(7 downto 0),
 		enable   => single_cycle_enable,
 		data_out => cw_em_out
 		);
