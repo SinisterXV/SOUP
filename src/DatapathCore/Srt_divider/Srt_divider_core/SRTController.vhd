@@ -46,13 +46,12 @@ begin
 		shift_amount_ld <= '0'; A_ld <= '0';
 		sel_A <= "00"; B_ld <= '0';
     	Q_rst <= '0'; Q_ld <= '0'; correct_s <= '0';
+        nextState <= currState;
 
 		case (currState) is
 			when idle =>
 				if (startDiv = '1') then
 					nextState <= preProc;
-                else
-                    nextState <= idle;
 				end if;
 
 			when preProc =>
