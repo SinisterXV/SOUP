@@ -318,7 +318,7 @@ begin
 		clk      => clk,
 		rst      => rst,
 		data_in  => ir_fd_out,
-		enable   => de_enable,
+		enable   => de_enable and single_cycle_enable,
 		data_out => ir_de_out
 		);
 
