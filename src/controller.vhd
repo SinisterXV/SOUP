@@ -117,10 +117,12 @@ begin
                 end if;
 
 			when multi_cycle =>
-				single_cycle_enable <= '0';
 
 				if ((div_done = '1') or (mul_done = '1') or (invalid_div = '1')) then
 					next_state <= single_cycle;
+				    single_cycle_enable <= '1';
+                else
+				    single_cycle_enable <= '0';
 				end if;
 
                 next_counter <= '0';

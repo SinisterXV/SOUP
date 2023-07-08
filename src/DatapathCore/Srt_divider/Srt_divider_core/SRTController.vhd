@@ -51,6 +51,8 @@ begin
 			when idle =>
 				if (startDiv = '1') then
 					nextState <= preProc;
+                else
+                    nextState <= idle;
 				end if;
 
 			when preProc =>
