@@ -7,9 +7,14 @@ entity datapath is
 	(
 		clk, rst            : in std_logic;
 		control_word        : in std_logic_vector(32 downto 0);
+		iram_out            : in std_logic_vector(31 downto 0);
+		dram_out            : in std_logic_vector(31 downto 0);
 		pc_enable           : in std_logic;
 		single_cycle_enable : in std_logic;
-		opcode              : out std_logic_vector(5 downto 0);
+		iram_address        : out std_logic_vector(31 downto 0);
+		dram_address        : out std_logic_vector(31 downto 0);
+		dram_rw_bar         : out std_logic;
+		dram_in             : out std_logic_vector(31 downto 0);
 		mul_done, div_done  : out std_logic;
 		invalid_div         : out std_logic
 	);
@@ -18,9 +23,7 @@ end datapath;
 architecture STRUCTURAL of datapath is
 	constant NBIT        : integer                             := 32;
 	constant NBIT_log    : integer                             := 5; --should be log2(NBIT)
-	constant RAM_WIDTH   : integer                             := 8;
 	constant nbit_zeroes : std_logic_vector(NBIT - 1 downto 0) := (others => '0');
-	constant opcode_size : integer                             := 6;
 	constant safe_cw     : std_logic_vector(32 downto 0)       := "000100000000000000000000010001000";
 
 	subtype word_type is std_logic_vector(NBIT - 1 downto 0);
@@ -164,24 +167,11 @@ begin
 			data_out => i_address
 		);
 
-	-- RAM_DEPTH is the address width of the IRAM.
-	-- IRAM is not byte-addreassble, but the PC assumes it is. 
-	-- For this reason, we cut the two LSBs of the PC.
-	i_mem : entity work.IRAM
-		generic map(
-			RAM_DEPTH => 8,
-			I_SIZE    => NBIT
-		)
-		port
-		map (
-		Rst  => Rst,
-		Addr => i_address(9 downto 2),
-		Dout => mem_instr_out
-		);
+	--IRAM signal assignments
+	iram_address  <= i_address;
+	mem_instr_out <= iram_out;
 
-	opcode  <= mem_instr_out(NBIT - 1 downto NBIT - opcode_size);
-
-	incr_pc <= std_logic_vector(unsigned(i_address) + 4);
+	incr_pc       <= std_logic_vector(unsigned(i_address) + 4);
 
 	--F/D REGISTERS
 	ir_fd : entity work.pipeRegister
@@ -510,20 +500,11 @@ begin
 	next_pc <= exeout_em_out when ((mem_perform_jump or ((mem_branch_enable and cond_out))) = '1') else
 		incr_pc;
 
-	d_mem : entity work.DRAM
-		generic map(
-			RAM_WIDTH  => RAM_WIDTH,
-			WORD_WIDTH => NBIT
-		)
-		port
-		map (
-		rst    => rst,
-		clk    => clk,
-		rw_bar => mem_rd_wr_bar,
-		addr   => exeout_em_out(RAM_WIDTH - 1 downto 0),
-		d_in   => b_em_out,
-		d_out  => mem_data_out
-		);
+	--DRAM signal assignments
+	dram_rw_bar  <= mem_rd_wr_bar;
+	dram_address <= exeout_em_out;
+	dram_in <= b_em_out;
+	mem_data_out <= dram_out;
 
 	--M/W REGISTERS
 	npc_mw : entity work.pipeRegister
