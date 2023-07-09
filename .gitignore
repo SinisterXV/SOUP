@@ -2,3 +2,6 @@
 **/*.list
 **/*.bin
 **/_dump.txt
+
+**/compilation_list.txt
+**/.env
