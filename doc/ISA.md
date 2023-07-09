@@ -1,10 +1,71 @@
 # ISA
 
+## Control word
+
+The control word is made of 33 bits.
+It is provided by the control unit during the fetch stage in order to target the behavior of the following 4 stages.
+
+### Decode stage
+
+`rf_rd1, cw(32)`: activates the read operation on port 1 of the register file.
+
+`rf_rd2, cw(31)`: activates the read operation on port 2 of the register file.
+
+`se_signed_unsigned_bar, cw(30)`: when it is zero, the immediate on 16 bits is extended as unsigned, otherwise as signed.
+
+`se_size_16_26_bar, cw(29)`: when it is zero, the immediate is `IR(25 downto 0)`, otherwise `IR(15 downto 0)`.
+
+### Execution Stage
+
+`ex_sel_a, cw(28)`: when it is 0, the first operand of the execution stage is NPC, otherwise it is the output of the first port of the register file.
+
+`ex_sel_b, cw(27)`: when it is 0, the first operand of the execution stage is the immediate, otherwise it is the output of the second port of the register file.
+
+`alu_sub_add_bar, cw(26)`: when it is 0 the adder performs an addition, otherwise a subtraction.
+
+`alu_logic_sel, cw(25 downto 22)`: define which logic operation to perform.
+
+`alu_shift_sel, cw(21 downto 20)`: define which shift operation to perform.
+
+`mul_start, cw(19)`: activates a mul operation when 1.
+
+`div_start, cw(18)`: activates a div operation when 1.
+
+`div_signed_unsigned_bar, cw(17)`: when it is zero, the division is unsigned, otherwise signed.
+
+`div_sel, cw(16)`: specifies whether we are interested in the quotient or the reminder of the division operation.
+
+`mul_sel, cw(15)`: specifies whether we are interested in the high or low part of the result of the multiplication.
+
+`cmp_config, cw(14 downto 12)`: define which compare operation to perform.
+
+`ex_sel_out, cw(11 downto 9)`: defines which is the output of the execution stage. 
+
+`branch_eq_neq_bar, cw(8)`: a branch condition can be either *equal zero* or *not equal zero*; the *zero detector* computes one of the two conditions thanks to this bit.
+
+### Memory Stage
+
+`mem_rw_wr_bar, cw(7)`: enables the write operation on the DRAM.
+
+`mem_branch_enable, cw(6)`: performs a branch operation: PC is overwritten in case a certain condition is verified.
+
+`mem_perform_jump, cw(5)`: performs a jump operation: PC is always overwritten.
+
+### Writeback Stage
+
+`wb_sel, cw(4 downto 3)`: decide the output of the write-back stage.
+
+`rf_sel_dest, cw(2)`: destination register for the register file.
+
+`rf_write31, cw(1)`: when it is 1, the destination in the register file is automatically `r31`.
+
+`rf_wr, cw(0)`: enables a write operation on the register file.
+
 ## Instructions
 
 ### add
 
-Opcode: `0x0 `
+Opcode: `0x00`
 
 Control Word: `110110000000000000000001010001101`
 
@@ -14,7 +75,7 @@ Action: `RF[x] = RF[y] + RF[z]`
 
 ### addi
 
-Opcode: `0x1`
+Opcode: `0x01`
 
 Control Word: `101111000000000000000001010001001`
 
@@ -26,7 +87,7 @@ The immediate value is sign-extended
 
 ### and
 
-Opcode: `0x2` 
+Opcode: `0x02` 
 
 Control Word: `110110010000000000000010010001101`
 
@@ -36,7 +97,7 @@ Action: `RF[x] = RF[y] & RF[z]`
 
 ### andi
 
-Opcode: `0x3` 
+Opcode: `0x03` 
 
 Control Word: `100111010000000000000010010001001`
 
@@ -48,7 +109,7 @@ The immediate value is not sign-extended
 
 ### nor
 
-Opcode: `0x4` 
+Opcode: `0x04` 
 
 Control Word: `110110000010000000000010010001101`
 
@@ -58,7 +119,7 @@ Action: `RF[x] = !(RF[y] | RF[z])`
 
 ### nori
 
-Opcode: `0x5` 
+Opcode: `0x05` 
 
 Control Word: `100111000010000000000010010001001`
 
@@ -70,7 +131,7 @@ The immediate value is not sign-extended
 
 ### nand 
 
-Opcode: `0x6` 
+Opcode: `0x06` 
 
 Control Word: `110110001110000000000010010001101`
 
@@ -80,7 +141,7 @@ Action: `RF[x] = !(RF[y] & RF[z])`
 
 ### nandi
 
-Opcode: `0x7` 
+Opcode: `0x07` 
 
 Control Word: `100111001110000000000010010001001`
 
@@ -92,7 +153,7 @@ The immediate value is not sign-extended
 
 ### xnor
 
-Opcode: `0x8` 
+Opcode: `0x08` 
 
 Control Word: `110110010010000000000010010001101`
 
@@ -102,7 +163,7 @@ Action: `RF[x] = !(RF[y] ^ RF[z])`
 
 ### xnori
 
-Opcode: `0x9` 
+Opcode: `0x09` 
 
 Control Word: `100111010010000000000010010001001`
 
@@ -114,7 +175,7 @@ The immediate value is not sign-extended
 
 ### beqz
 
-Opcode: `0xa` 
+Opcode: `0x0a` 
 
 Control Word: `100101000000000000000001111000000`
 
@@ -126,7 +187,7 @@ The immediate value is not sign-extended
 
 ### bnez
 
-Opcode: `0xb` 
+Opcode: `0x0b` 
 
 Control Word: `100101000000000000000001011000000`
 
@@ -138,7 +199,7 @@ The immediate value is not sign-extended
 
 ### j
 
-Opcode: `0xc` 
+Opcode: `0x0c` 
 
 Control Word: `000001000000000000000001010100000`
 
@@ -150,7 +211,7 @@ The immediate value is not signed extended
 
 ### jal
 
-Opcode: `0xd` 
+Opcode: `0x0d` 
 
 Control Word: `000001000000000000000001010100011`
 
@@ -162,7 +223,7 @@ The immediate value is not signed extended
 
 ### lw
 
-Opcode: `0xe` 
+Opcode: `0x0e` 
 
 Control Word: `100111000000000000000001010010001`
 
@@ -174,7 +235,7 @@ The immediate value is not signed extended
 
 ### nop
 
-Opcode: `0xf` 
+Opcode: `0x0f` 
 
 Control Word: `000100000000000000000000010001000`
 
