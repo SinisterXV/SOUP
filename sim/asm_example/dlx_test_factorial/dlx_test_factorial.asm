@@ -80,7 +80,7 @@ factorial:
     jal pop
     nop
     nop
-    no
+    nop
     add r8, r10, r0
 
     ; pop r31
