@@ -1,0 +1,205 @@
+Information: Updating design information... (UID-85)
+Warning: Design 'dlx' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : dlx
+Version: S-2021.06-SP4
+Date   : Sun Jul  9 17:49:50 2023
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: dtpth/booth_multiplier/boothmuldatapath_0/currB_reg[0]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: dtpth/booth_multiplier/boothmuldatapath_0/currP_reg[63]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  dlx                5K_hvratio_1_4        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  dtpth/booth_multiplier/boothmuldatapath_0/currB_reg[0]/CK (DFF_X1)
+                                                          0.00       0.00 r
+  dtpth/booth_multiplier/boothmuldatapath_0/currB_reg[0]/Q (DFF_X1)
+                                                          0.08       0.08 f
+  dtpth/booth_multiplier/boothmuldatapath_0/U454/Z (XOR2_X1)
+                                                          0.08       0.16 f
+  dtpth/booth_multiplier/boothmuldatapath_0/U587/ZN (INV_X1)
+                                                          0.03       0.19 r
+  dtpth/booth_multiplier/boothmuldatapath_0/U458/ZN (NOR2_X1)
+                                                          0.03       0.22 f
+  dtpth/booth_multiplier/boothmuldatapath_0/U459/ZN (NAND2_X1)
+                                                          0.03       0.25 r
+  dtpth/booth_multiplier/boothmuldatapath_0/U90/Z (BUF_X1)
+                                                          0.03       0.29 r
+  dtpth/booth_multiplier/boothmuldatapath_0/U2/Z (BUF_X1)
+                                                          0.04       0.33 r
+  dtpth/booth_multiplier/boothmuldatapath_0/U22/Z (BUF_X1)
+                                                          0.09       0.42 r
+  dtpth/booth_multiplier/boothmuldatapath_0/U462/ZN (OAI221_X1)
+                                                          0.08       0.50 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/B[1] (boothMulDatapath_NBIT32_DW01_add_0_DW01_add_4)
+                                                          0.00       0.50 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_1/CO (FA_X1)
+                                                          0.11       0.61 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_2/CO (FA_X1)
+                                                          0.09       0.70 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_3/CO (FA_X1)
+                                                          0.09       0.80 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_4/CO (FA_X1)
+                                                          0.09       0.89 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_5/CO (FA_X1)
+                                                          0.09       0.99 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_6/CO (FA_X1)
+                                                          0.09       1.08 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_7/CO (FA_X1)
+                                                          0.09       1.18 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_8/CO (FA_X1)
+                                                          0.09       1.27 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_9/CO (FA_X1)
+                                                          0.09       1.36 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_10/CO (FA_X1)
+                                                          0.09       1.46 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_11/CO (FA_X1)
+                                                          0.09       1.55 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_12/CO (FA_X1)
+                                                          0.09       1.65 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_13/CO (FA_X1)
+                                                          0.09       1.74 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_14/CO (FA_X1)
+                                                          0.09       1.84 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_15/CO (FA_X1)
+                                                          0.09       1.93 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_16/CO (FA_X1)
+                                                          0.09       2.03 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_17/CO (FA_X1)
+                                                          0.09       2.12 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_18/CO (FA_X1)
+                                                          0.09       2.21 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_19/CO (FA_X1)
+                                                          0.09       2.31 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_20/CO (FA_X1)
+                                                          0.09       2.40 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_21/CO (FA_X1)
+                                                          0.09       2.50 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_22/CO (FA_X1)
+                                                          0.09       2.59 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_23/CO (FA_X1)
+                                                          0.09       2.69 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_24/CO (FA_X1)
+                                                          0.09       2.78 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_25/CO (FA_X1)
+                                                          0.09       2.87 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_26/CO (FA_X1)
+                                                          0.09       2.97 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_27/CO (FA_X1)
+                                                          0.09       3.06 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_28/CO (FA_X1)
+                                                          0.09       3.16 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_29/CO (FA_X1)
+                                                          0.09       3.25 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_30/CO (FA_X1)
+                                                          0.09       3.35 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_31/CO (FA_X1)
+                                                          0.09       3.44 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_32/CO (FA_X1)
+                                                          0.09       3.54 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_33/CO (FA_X1)
+                                                          0.09       3.63 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_34/CO (FA_X1)
+                                                          0.09       3.72 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_35/CO (FA_X1)
+                                                          0.09       3.82 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_36/CO (FA_X1)
+                                                          0.09       3.91 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_37/CO (FA_X1)
+                                                          0.09       4.01 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_38/CO (FA_X1)
+                                                          0.09       4.10 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_39/CO (FA_X1)
+                                                          0.09       4.20 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_40/CO (FA_X1)
+                                                          0.09       4.29 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_41/CO (FA_X1)
+                                                          0.09       4.39 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_42/CO (FA_X1)
+                                                          0.09       4.48 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_43/CO (FA_X1)
+                                                          0.09       4.57 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_44/CO (FA_X1)
+                                                          0.09       4.67 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_45/CO (FA_X1)
+                                                          0.09       4.76 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_46/CO (FA_X1)
+                                                          0.09       4.86 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_47/CO (FA_X1)
+                                                          0.09       4.95 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_48/CO (FA_X1)
+                                                          0.09       5.05 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_49/CO (FA_X1)
+                                                          0.09       5.14 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_50/CO (FA_X1)
+                                                          0.09       5.23 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_51/CO (FA_X1)
+                                                          0.09       5.33 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_52/CO (FA_X1)
+                                                          0.09       5.42 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_53/CO (FA_X1)
+                                                          0.09       5.52 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_54/CO (FA_X1)
+                                                          0.09       5.61 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_55/CO (FA_X1)
+                                                          0.09       5.71 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_56/CO (FA_X1)
+                                                          0.09       5.80 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_57/CO (FA_X1)
+                                                          0.09       5.90 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_58/CO (FA_X1)
+                                                          0.09       5.99 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_59/CO (FA_X1)
+                                                          0.09       6.08 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_60/CO (FA_X1)
+                                                          0.09       6.18 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_61/CO (FA_X1)
+                                                          0.09       6.27 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_62/CO (FA_X1)
+                                                          0.09       6.37 f
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/U1_63/S (FA_X1)
+                                                          0.13       6.50 r
+  dtpth/booth_multiplier/boothmuldatapath_0/add_96/SUM[63] (boothMulDatapath_NBIT32_DW01_add_0_DW01_add_4)
+                                                          0.00       6.50 r
+  dtpth/booth_multiplier/boothmuldatapath_0/U590/ZN (AOI22_X1)
+                                                          0.03       6.53 f
+  dtpth/booth_multiplier/boothmuldatapath_0/U589/ZN (INV_X1)
+                                                          0.03       6.56 r
+  dtpth/booth_multiplier/boothmuldatapath_0/currP_reg[63]/D (DFF_X1)
+                                                          0.01       6.57 r
+  data arrival time                                                  6.57
+
+  clock clk (rise edge)                                   7.00       7.00
+  clock network delay (ideal)                             0.00       7.00
+  dtpth/booth_multiplier/boothmuldatapath_0/currP_reg[63]/CK (DFF_X1)
+                                                          0.00       7.00 r
+  library setup time                                     -0.03       6.97
+  data required time                                                 6.97
+  --------------------------------------------------------------------------
+  data required time                                                 6.97
+  data arrival time                                                 -6.57
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.40
+
+
+1
