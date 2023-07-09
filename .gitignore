@@ -1,10 +1,12 @@
+# Drawio files
 *.drawio.bkp
+# Files created by the assembler
 **/*.list
 **/*.bin
 **/_dump.txt
-
-**/compilation_list.txt
+# .env file
 **/.env
+# modelsim files
 **/work
 **/transcript
 **/*.wlf
