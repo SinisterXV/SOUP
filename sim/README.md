@@ -9,7 +9,7 @@
     PASSWORD="xxx"
     SERVER_WORKING_DIRECTORY="xxx"
 ```
-- Use the script `simulate.py` to run the simulation, either on the server or locally. The arguments for the script are:
+- Use the script `simulate.py` to run the simulation, either on the server or locally. If you are working on the server, you need to run first `setmentor`. The arguments for the script are:
 
 ```
     -h, --help          show this help message and exit
