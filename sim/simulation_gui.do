@@ -7,9 +7,9 @@ add wave -label CLK             sim:/tb_dlx/clk
 add wave -label RST             sim:/tb_dlx/rst
 
 add wave -label PC              sim:/tb_dlx/dlx_inst/dtpth/i_address
-add wave -label OPCODE          sim:/tb_dlx/dlx_inst/dtpth/opcode
+add wave -label OPCODE          sim:/tb_dlx/dlx_inst/cntrl/opcode
 add wave -label RF              sim:/tb_dlx/dlx_inst/dtpth/rf/registers
-add wave -label DRAM            sim:/tb_dlx/dlx_inst/dtpth/d_mem/dram_memory
+add wave -label DRAM            sim:/tb_dlx/data_mem/dram_memory
 
 add wave    -group FETCH    -label i_address    -color "light blue"    sim:/tb_dlx/dlx_inst/dtpth/i_address
 add wave    -group FETCH    -label mem_inst_out -color "light blue"    sim:/tb_dlx/dlx_inst/dtpth/mem_instr_out

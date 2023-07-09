@@ -15,7 +15,7 @@ puts $dump_file "REGISTER FILE"
 puts $dump_file $register_file_values 
 puts $dump_file ""
 puts "Dump of the DRAM..."
-quietly set dram_values [examine -radix d sim:/tb_dlx/dlx_inst/dtpth/d_mem/dram_memory]
+quietly set dram_values [examine -radix d sim:/tb_dlx/data_mem/dram_memory]
 # puts $dram_values
 puts $dump_file "DRAM"
 puts $dump_file $dram_values
