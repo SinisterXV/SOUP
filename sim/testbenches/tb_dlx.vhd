@@ -32,6 +32,7 @@ begin
 		rst <= '1';
 		wait for 2*clk_period;
 		rst <= '0';
+        wait for 250*clk_period;
 		wait;
 
 	end process;

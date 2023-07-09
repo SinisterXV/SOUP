@@ -55,6 +55,13 @@ def main():
         help = "open the gui to analyze waveforms"
     )
 
+    # Argument to prettify the dump of rf and dram
+    parser.add_argument(
+        "-p", "--pretty",
+        action="store_true",
+        help = "prettify dump"
+    )
+
     arguments = parser.parse_args()
 
     color_print("Start of execution\n",bcolors.HEADER)
@@ -74,12 +81,14 @@ def main():
         exit(1)
 
     # Assemble the input file
+
     assembler_command = ["./assemble.sh", f"asm_example/{arguments.asm}/{arguments.asm}.asm"]
     retcode = subprocess.call(assembler_command , cwd="../sim/")
     check_return_code(retcode, "assembler")
 
     # vsim command
-    vsim_command = ["vsim","-do", "simulation_cli.do", "tb_dlx"]
+
+    vsim_command = ["vsim","-do", "simulation_cli.do", "-t", "10ps", "tb_dlx"]
 
     if arguments.gui == False:
         vsim_command.append("-c")
@@ -89,6 +98,11 @@ def main():
         vsim_command[2] = "simulation_gui.do"
         retcode = subprocess.call(vsim_command, cwd="../sim/")
         check_return_code(retcode, "vsim")
+
+    # Prettify dump file
+    if arguments.pretty == True: 
+        retcode = subprocess.call(["python3", "prettify_dump.py"])
+        check_return_code(retcode, "prettify_dump")
 
     color_print(f'Execution terminated successfully',bcolors.OKCYAN)
 
