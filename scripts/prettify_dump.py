@@ -23,7 +23,7 @@ def main():
         output_file.write(f"{f'reg':<7} {f'hex':<15} int\n")
         output_file.write("-------------------------------------\n")
         for register in rf_content:
-            string = f"{f'{counter}:':<7} {f'0x{int(register):08x}':<15} {int(register)}\n"
+            string = f"{f'r{counter}:':<7} {f'0x{int(register):08x}':<15} {int(register)}\n"
             output_file.write(string)
             counter += 1
 
