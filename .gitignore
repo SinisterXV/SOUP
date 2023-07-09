@@ -5,3 +5,7 @@
 
 **/compilation_list.txt
 **/.env
+**/work
+**/transcript
+**/*.wlf
+**/dump_rf_dmem.dump

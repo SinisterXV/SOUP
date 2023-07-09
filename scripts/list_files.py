@@ -2,7 +2,7 @@ import os
 import pathlib
 from platform import system
 
-with open("compilation_list.txt", "w") as output: 
+with open("../sim/dlx_compile_sources.f", "w") as output: 
     root_dir = str(pathlib.Path(__name__).parent.resolve().parent.resolve()) #get parent directory
     if (system() == "Windows"):
         root_dir = root_dir + "\\src\\" #paths in windows use backslashes
@@ -23,4 +23,4 @@ with open("compilation_list.txt", "w") as output:
     #write sorted filenames to output file
     for i in range(len(file_list)):
         file_list[i] = file_list[i].replace("\\", "/") #replace Windows's backslashes with UNIX's forward slashes 
-        output.write(file_list[i] + "\n")
+        output.write("../src/" + file_list[i] + "\n")
