@@ -77,4 +77,9 @@ sw 4(r0), r20
 nop
 nop
 nop
+
+terminate:
+j terminate
+nop
+nop
 nop

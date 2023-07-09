@@ -16,13 +16,15 @@ nop
 nop
 nop
 sw 0(r0), r10
-j terminate
 nop
 nop
 nop
 
 terminate:
-    j terminate
+j terminate
+nop
+nop
+nop
 
 
 factorial:

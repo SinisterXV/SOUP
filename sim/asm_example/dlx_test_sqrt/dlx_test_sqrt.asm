@@ -103,3 +103,9 @@ sw 0(r0), r2
 nop
 nop
 nop
+
+terminate:
+j terminate
+nop
+nop
+nop

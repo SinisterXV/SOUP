@@ -100,6 +100,7 @@ nop
 nop
 
 end_loop_1:
+j end_loop_1
 nop
 nop
 nop
