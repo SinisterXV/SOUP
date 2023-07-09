@@ -11,3 +11,7 @@
 **/transcript
 **/*.wlf
 **/dump_rf_dmem.dump
+# synthesis
+**/command.log
+**/default.svf
+**/filenames.log

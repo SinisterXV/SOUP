@@ -24,8 +24,12 @@ architecture a of register_file is
 	subtype reg_addr is natural range 0 to 31; --allowed register addresses
 	type reg_array is array(reg_addr) of std_logic_vector(NBIT - 1 downto 0); --register file type declaration
 
+    signal not_clk: std_logic;
 	signal registers: reg_array; --register file signal declaration
 begin
+
+    not_clk <= not(clk);
+    
 	readproc1: process(registers, enable, rd1, add_rd1)
 	begin
 		if((enable = '1') and (rd1 = '1')) then
@@ -41,9 +45,9 @@ begin
 	end process readproc2; 
 
 
-	writeproc: process(registers, clk, reset, enable, wr, write31, add_wr, datain)
+	writeproc: process(registers, reset, enable, wr, write31, add_wr, datain, not_clk)
 	begin
-		if(falling_edge(clk)) then
+		if(rising_edge(not_clk)) then
 			if(reset = '1') then
 				registers <= (others => (others => '0'));
 			elsif((enable = '1') and (wr = '1')) then

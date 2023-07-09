@@ -30,3 +30,4 @@
 ../src/./a.b-datapath.vhd
 ../src/./a.a-controller.vhd
 ../src/./a-dlx.vhd
+./testbenches/tb_dlx.vhd
