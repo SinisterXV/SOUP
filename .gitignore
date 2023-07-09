@@ -4,7 +4,7 @@
 **/*.list
 **/*.bin
 **/_dump.txt
-**/*dump.mem
+**/**dump.mem
 # .env file
 **/.env
 # modelsim files

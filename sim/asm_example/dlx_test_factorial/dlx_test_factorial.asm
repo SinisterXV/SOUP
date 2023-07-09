@@ -5,7 +5,7 @@
 ; }
 
 ; Input : 9
-; Expected output: 462880
+; Expected output: 362880
 
 ; STACK INITIALIZATION
 addi r30, r0, 20
