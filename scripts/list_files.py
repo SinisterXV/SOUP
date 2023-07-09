@@ -22,5 +22,6 @@ with open("../sim/dlx_compile_sources.f", "w") as output:
 
     #write sorted filenames to output file
     for i in range(len(file_list)):
-        file_list[i] = file_list[i].replace("\\", "/") #replace Windows's backslashes with UNIX's forward slashes 
-        output.write("../src/" + file_list[i] + "\n")
+        if (not ".mem" in file_list[i]):
+            file_list[i] = file_list[i].replace("\\", "/") #replace Windows's backslashes with UNIX's forward slashes 
+            output.write("../src/" + file_list[i] + "\n")
