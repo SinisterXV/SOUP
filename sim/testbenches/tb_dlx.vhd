@@ -31,7 +31,7 @@ begin
 		port map
 		(
 			Rst  => Rst,
-			Addr => iram_address,
+			Addr => iram_address(9 downto 2),
 			Dout => iram_out
 		);
 
@@ -45,7 +45,7 @@ begin
 		rst    => rst,
 		clk    => clk,
 		rw_bar => dram_rw_bar,
-		addr   => dram_address,
+		addr   => dram_address(RAM_WIDTH - 1 downto 0),
 		d_in   => dram_in,
 		d_out  => dram_out
 		);
