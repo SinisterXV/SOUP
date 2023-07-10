@@ -34,15 +34,12 @@ addi r1, r0, 4
 add r2, r0, r0
 nop
 nop
-nop
 
 loop_1:
 slt r10, r2, r1 
 nop
 nop
-nop
-beqz r10, end_loop_1
-nop
+beqz r10, terminate
 nop
 nop
 nop
@@ -51,15 +48,12 @@ nop
 add r3, r2, r0
 nop
 nop
-nop
 
 loop_2:
 slt r10, r3, r1
 nop
 nop
-nop
 beqz r10, end_loop_2
-nop
 nop
 nop
 nop
@@ -68,14 +62,11 @@ lw r6, 0(r2)
 lw r7, 0(r3)
 nop
 nop
-nop
 
 sgt r10, r6, r7
 nop
 nop
-nop
 beqz r10, next_swap
-nop
 nop
 nop
 nop
@@ -89,7 +80,6 @@ j loop_2
 nop
 nop
 nop
-nop
 
 end_loop_2:
 addi r2, r2, 1
@@ -97,10 +87,9 @@ j loop_1
 nop
 nop
 nop
-nop
 
-end_loop_1:
-j end_loop_1
+terminate:
+j terminate
 nop
 nop
 nop

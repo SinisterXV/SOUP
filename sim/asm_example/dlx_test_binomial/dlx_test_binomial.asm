@@ -70,6 +70,7 @@ nop
 nop
 
 end_loop_B:
+; At the end, r20 == result, m4 == result
 uquot r20, r10, r11
 nop
 nop

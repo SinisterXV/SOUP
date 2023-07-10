@@ -4,21 +4,21 @@
 ;     else return n * factorial(n - 1)
 ; }
 
-; Input : 9
-; Expected output: 362880
+; Input : 10
+; Expected output: 3628800
+
+; As we have many subroutines, we use the convention of r1 as input register, 
+; r10 as output register
 
 ; STACK INITIALIZATION
 addi r30, r0, 20
 
-addi r1, r0, 9
+addi r1, r0, 10
 jal factorial
 nop
 nop
 nop
 sw 0(r0), r10
-nop
-nop
-nop
 
 terminate:
 j terminate
@@ -73,7 +73,7 @@ factorial:
     nop
     nop
 
-    ; Save factorial(N-1)
+    ; Save factorial(N-1) into r7
     add r7, r10, r0
 
     ; pop N
@@ -81,13 +81,15 @@ factorial:
     nop
     nop
     nop
+    ; Save N into r8
     add r8, r10, r0
 
-    ; pop r31
+    ; pop return value
     jal pop
     nop
     nop
     nop
+    ; move the return value into r31
     add r31, r10, r0
 
     smull r10, r8, r7
