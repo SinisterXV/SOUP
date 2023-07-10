@@ -6,9 +6,15 @@
 <img src="doc/images/SoupLogo.png" alt= “” width="500">
 </p>
 
+## Authors
+
+- Sansone Giacomo, [pcineverdies](https://github.com/pcineverdies)
+- Silvestri Giuseppe [SinisterXV](https://github.com/SinisterXV)
+- Valenza Arianna [ariannavalenza](https://github.com/ariannavalenza)
+
 ## What it is
 
-## Why it is a pro version
+### Why it is a pro version
 
 We decided to implement the multiplication and division instructions. Both the instructions are multi-cycle, this required a modification of the controller and the registers of the pipeline.
 
