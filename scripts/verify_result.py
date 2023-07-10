@@ -18,7 +18,7 @@ def verify_result(key, value):
         else:
             return True, f"Memory location {key} is {value} as expected"
     else:
-        integer_match = False if str(value[0:1]) == "0x" else True
+        integer_match = False if str(value[0:2]) == "0x" else True
 
         if str(key)[0] == 'r':
             return False, f"Register {key} is not {value};\n->\tfound {integer_value if integer_match else hex_value} instead"
