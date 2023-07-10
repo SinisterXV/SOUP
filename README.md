@@ -24,11 +24,11 @@ Our simulation environment is fully automatized, as it will be further explained
 
 ## Datapath
 
-## Controller
-
 Here is an image of the datapath. The complete overview of the components and some insights about the design choices can be found in the documentation. 
 
 ![](doc/images/datapath.png)
+
+## Controller
 
 ## ISA
 
