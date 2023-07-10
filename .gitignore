@@ -18,3 +18,5 @@
 **/filenames.log
 # other
 **/todo.md
+# python
+**/__pycache__
