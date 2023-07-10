@@ -19,36 +19,20 @@ def color_print(string, color):
     print(f'{color}{string}{bcolors.ENDC}')
 
 def check_return_code(return_code, command = ""):
+    message = f'Command {command} terminated with exit code {return_code}\n'
     if return_code == 0:
-        color_print(
-            f'Command {command} terminated with exit code {return_code}\n',
-            bcolors.OKGREEN
-        )
+        color_print(message, bcolors.OKGREEN)
     else:
-        color_print(
-            f'Command {command} terminated with exit code {return_code}\n',
-            bcolors.FAIL
-        )
+        color_print(message, bcolors.FAIL)
         exit(1)
 
 # Utility functions to parse the `-v` arguments
-def parse_var(s):
+def parse_verify_argument(s):
     items = s.split('=')
-    key = items[0].strip() # we remove blanks around keys, as is logical
-    if len(items) > 1:
-        # rejoin the rest:
-        value = '='.join(items[1:])
-    return (key, value)
+    return (items[0].strip(), items[1].strip())
 
-
-def parse_vars(items):
-    d = []
-
-    if items:
-        for item in items:
-            key, value = parse_var(item)
-            d.append({"key" : key, "value" : value})
-    return d
+def parse_verify_arguments(items):
+    return [{"key" : parse_verify_argument(item)[0], "value" : parse_verify_argument(item)[1]} for item in items ]
 
 def main():
 
@@ -133,7 +117,7 @@ def main():
         retcode = subprocess.call(["python3", "prettify_dump.py"])
         check_return_code(retcode, "prettify_dump")
 
-        to_verify = parse_vars(arguments.verify)
+        to_verify = parse_verify_arguments(arguments.verify)
 
         for pair in to_verify:
             return_code, message = verify_result(pair["key"], pair["value"])

@@ -28,7 +28,7 @@ options:
                         written both in hex (8 digits) or in dec
 ```
 
-- After the simulation is terminated, a dump of the register file and of the dram can be found in `sim/sump_ref_dmem.dump`.o
+- After the simulation is terminated, a dump of the register file and of the dram can be found in `sim/dump_ref_dmem.dump`
 
 - Using the `-v` argument, an automated verification of the final result can be performed. You can either verify a dram cell or the value of a register. The provided value is checked with the content of the rf/dram at the end of the simulation. On the output of the command you can see whether the match was found or not. Here is an example: 
 
@@ -43,4 +43,4 @@ options:
 
 ```
 
-- In the gui mode, all the signals of the datapath are already in the waveform viewer, grouped by pipeline stage, so that it is easy to see, at each stage, what is happening in each stage.
+- In the gui mode, all the signals of the datapath are already in the waveform viewer, grouped by pipeline stage, so that it is easy to see, at each stage, what is happening.
