@@ -1,1 +1,1 @@
-rsync -a --delete --cvs-exclude --filter=':- .gitignore'  -e "ssh -p $3" ../ $4@$2:$1
+rsync -a --delete --exclude 'phy' --cvs-exclude --filter=':- .gitignore'  -e "ssh -p $3" ../ $4@$2:$1
