@@ -42,3 +42,5 @@ options:
     ->	Found 0
 
 ```
+
+- In the gui mode, all the signals of the datapath are already in the waveform viewer, grouped by pipeline stage, so that it is easy to see, at each stage, what is happening in each stage.
