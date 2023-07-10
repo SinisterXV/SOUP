@@ -79,7 +79,7 @@ Opcode: `0x01`
 
 Control Word: `101111000000000000000001010001001`
 
-Example: `add rx, ry, imm_16`
+Example: `addi rx, ry, imm_16`
 
 Action: `RF[x] = RF[y] + imm_16`
 
@@ -259,7 +259,7 @@ Opcode: `0x11`
 
 Control Word: `100111011100000000000010010001001`
 
-Example: `and rx, ry, imm_16`
+Example: `ori rx, ry, imm_16`
 
 Action: `RF[x] = RF[y] | imm_16`
 
@@ -281,7 +281,7 @@ Opcode: `0x13`
 
 Control Word: `101111100000000000011000010001001`
 
-Example: `sge rx, ry, imm_16`
+Example: `sgei rx, ry, imm_16`
 
 Action: `rx = (ry >= imm_16) ? 1 : 0`
 
@@ -363,13 +363,13 @@ Example: `slt rx, ry, rz`
 
 Action: `rx = (ry < rz) ? 1 : 0`
 
-### slt
+### slti
 
 Opcode: `0x1b`
 
 Control Word: `101111100000000000001000010001001`
 
-Example: `slt rx, ry, imm_16`
+Example: `slti rx, ry, imm_16`
 
 Action: `rx = (ry < imm_16) ? 1 : 0`
 

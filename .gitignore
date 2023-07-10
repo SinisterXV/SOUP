@@ -18,5 +18,6 @@
 **/filenames.log
 # other
 **/todo.md
+**/table_ISA.md
 # python
 **/__pycache__
