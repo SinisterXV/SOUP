@@ -1,6 +1,9 @@
 ##############################################################
 # Analyse compilation list
 ##############################################################
+
+# dlx_compile_sources.f is the list of files to be compiled (same as the
+# files to be simulated, without the testbench and the memory)
 set list_file [open "dlx_compile_sources.f" r]
 while {[gets $list_file line] >= 0} {
     set exit_code [analyze -library WORK -format vhdl $line]
@@ -23,6 +26,9 @@ set_wire_load_model -name 5K_hvratio_1_4
 ##############################################################
 # Create clock signal
 ##############################################################
+
+# According to the timing reports, we cannot go beyond 7ns of clock period.
+# This is because of a 64-bit RCA we have inside the multiplier.
 set timing_constraint_ns 7
 create_clock -name "clk" -period $timing_constraint_ns clk
 report_clock
