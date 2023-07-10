@@ -2,6 +2,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+-- Regarding the datapath, its definition is completely structural, 
+-- and it follows the drawing of the datapath in our documentation
+
 entity datapath is
 	port
 	(
@@ -21,14 +24,20 @@ entity datapath is
 end datapath;
 
 architecture STRUCTURAL of datapath is
+
+    -- Number of bits of the word
 	constant NBIT        : integer                             := 32;
+    -- Log of the previous value
 	constant NBIT_log    : integer                             := 5; --should be log2(NBIT)
+    -- Constant for a word of all zeros
 	constant nbit_zeroes : std_logic_vector(NBIT - 1 downto 0) := (others => '0');
+    -- "Safe" control word: when it is used, nothing happens
 	constant safe_cw     : std_logic_vector(32 downto 0)       := "000100000000000000000000010001000";
 
 	subtype word_type is std_logic_vector(NBIT - 1 downto 0);
 
 	--CONTROL WORD SIGNALS
+    
 	--DECODE STAGE
 	signal rf_rd1                  : std_logic;
 	signal rf_rd2                  : std_logic;
@@ -119,7 +128,9 @@ architecture STRUCTURAL of datapath is
 	signal cw_em_out               : std_logic_vector(7 downto 0);
 	signal cw_mw_out               : std_logic_vector(4 downto 0);
 begin
+
 	--CONTROL WORD DECOMPOSITION
+    
 	--DECODE STAGE
 	rf_rd1                  <= cw_fd_out(32);
 	rf_rd2                  <= cw_fd_out(31);

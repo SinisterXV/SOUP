@@ -21,9 +21,13 @@ entity controller is
 end controller;
 
 architecture BEHAVIORAL of controller is
+
+    -- State definition
 	type state_type is (single_cycle, multi_cycle);
 
+    -- Look up table for the hard-wired behavior
 	type LUT is array (integer range 0 to LUT_MEM_SIZE - 1) of std_logic_vector(CW_SIZE - 1 downto 0);
+
 	signal cw_mem : LUT := (
 		"110110000000000000000001010001101",  --add  
 		"101111000000000000000001010001001",  --addi 
@@ -72,6 +76,7 @@ architecture BEHAVIORAL of controller is
 		"110110000000001100000101010001101",  --srem 
         "100111000000000000000001010100000"); -- ret
 
+    -- Registers
 	signal curr_state, next_state     : state_type;
 	signal curr_counter, next_counter : std_logic;
 
@@ -95,13 +100,18 @@ begin
 		single_cycle_enable <= '1';
 		next_state          <= curr_state;
 		next_counter        <= curr_counter;
+
 		case (curr_state) is
+            -- During the single cycle, the control word is provided acccording to
+            -- the opcode. In case a mul/div operation is recognized, counter is 
+            -- set to 1. When counter is set to 1, next_state is multi_cycle and
+            -- the program counter is disabled, so that no more instructions can be fetched
 			when single_cycle =>
 
 				cw <= cw_mem(to_integer(unsigned(opcode)));
 
 				--switch to multi_cycle if MUL or DIV
-				if ((opcode = "100111") or --smulh
+				if ((opcode = "100111") or     --smulh
 					(opcode = "101000") or     --smull
 					(opcode = "101001") or     --uquot
 					(opcode = "101010") or     --urem
@@ -119,6 +129,8 @@ begin
 
 			when multi_cycle =>
 
+                -- During multi-cycle, we wait for an and signal in order to 
+                -- restore the normal behavior of the controller
 				cw <= cw_mem(to_integer(unsigned(opcode)));
 
 				if ((div_done = '1') or (mul_done = '1') or (invalid_div = '1')) then

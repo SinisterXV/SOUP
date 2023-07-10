@@ -1,6 +1,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
+-- PIPO register on N bits
+
 entity pipeRegister is
 	generic (
 		NBIT        : integer := 32;

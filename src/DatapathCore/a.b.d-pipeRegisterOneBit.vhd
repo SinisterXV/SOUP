@@ -1,6 +1,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
+-- Just a PIPO register on 1 bit
+
 entity pipeRegisterOneBit is
 	generic (
 		reset_value : std_logic);

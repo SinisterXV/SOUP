@@ -17,6 +17,10 @@ architecture BEHAVIORAL of sign_extender is
 	constant sixteenZeroes : std_logic_vector(15 downto 0) := (others => '0');
 	constant sixZeroes     : std_logic_vector(5 downto 0)  := (others => '0');
 begin
+    -- if size_16_26_bar is '0', then immediate26 input is considered, and it is
+    -- extended as unsigned (adding 6 zeros as msb). Otherwise, the immediate16 
+    -- input is considered: depending on the value of signed_unsigned_bar, the extension
+    -- is performed either signed or unsigned.
 	result <= (sixZeroes & immediate26) when (size_16_26_bar = '0') else
 		(sixteenOne & immediate16) when ((immediate16(15) = '1') and (signed_unsigned_bar = '1')) else
 		(sixteenZeroes & immediate16);
