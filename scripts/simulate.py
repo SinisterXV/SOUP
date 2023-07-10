@@ -2,6 +2,7 @@
 
 import argparse
 import subprocess
+from verify_result import verify_result
 
 class bcolors:
     HEADER = '\033[95m'
@@ -30,6 +31,24 @@ def check_return_code(return_code, command = ""):
         )
         exit(1)
 
+# Utility functions to parse the `-v` arguments
+def parse_var(s):
+    items = s.split('=')
+    key = items[0].strip() # we remove blanks around keys, as is logical
+    if len(items) > 1:
+        # rejoin the rest:
+        value = '='.join(items[1:])
+    return (key, value)
+
+
+def parse_vars(items):
+    d = []
+
+    if items:
+        for item in items:
+            key, value = parse_var(item)
+            d.append({"key" : key, "value" : value})
+    return d
 
 def main():
 
@@ -62,6 +81,16 @@ def main():
         help = "prettify dump"
     )
 
+    parser.add_argument("-v", "--verify",
+                        metavar="KEY=VALUE",
+                        nargs='*',
+                        help="""Set a list of key-value elements to verify from the rf/dram final dump.
+                                This option is used only if `-p` is present.
+                                You can add either a register as `rx=XXX` where `x` is in 0...31
+                                or a memory cell as `my=YYY`, where `y` is in 0...255.
+                                The value can be written both in hex (8 digits) or in dec"""
+    )
+                                
     arguments = parser.parse_args()
 
     color_print("Start of execution\n",bcolors.HEADER)
@@ -104,7 +133,16 @@ def main():
         retcode = subprocess.call(["python3", "prettify_dump.py"])
         check_return_code(retcode, "prettify_dump")
 
-    color_print(f'Execution terminated successfully',bcolors.OKCYAN)
+        to_verify = parse_vars(arguments.verify)
+
+        for pair in to_verify:
+            return_code, message = verify_result(pair["key"], pair["value"])
+            if return_code == True:
+                color_print(message ,bcolors.BOLD)
+            else:
+                color_print(message ,bcolors.FAIL)
+
+    color_print(f'\nExecution terminated successfully',bcolors.OKCYAN)
 
 if __name__ == "__main__":
     main()

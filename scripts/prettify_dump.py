@@ -35,7 +35,7 @@ def main():
 
         counter = 255
         for word in dram_content:
-            string = f"{f'{counter}:':<7} {f'0x{int(word):08x}':<15} {int(word)}\n"
+            string = f"{f'm{counter}:':<7} {f'0x{int(word):08x}':<15} {int(word)}\n"
             output_file.write(string)
             counter -= 1
         
