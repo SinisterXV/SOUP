@@ -117,14 +117,16 @@ def main():
         retcode = subprocess.call(["python3", "prettify_dump.py"])
         check_return_code(retcode, "prettify_dump")
 
-        to_verify = parse_verify_arguments(arguments.verify)
+        if arguments.verify is not None:
 
-        for pair in to_verify:
-            return_code, message = verify_result(pair["key"], pair["value"])
-            if return_code == True:
-                color_print(message ,bcolors.BOLD)
-            else:
-                color_print(message ,bcolors.FAIL)
+            to_verify = parse_verify_arguments(arguments.verify)
+
+            for pair in to_verify:
+                return_code, message = verify_result(pair["key"], pair["value"])
+                if return_code == True:
+                    color_print(message ,bcolors.BOLD)
+                else:
+                    color_print(message ,bcolors.FAIL)
 
     color_print(f'\nExecution terminated successfully',bcolors.OKCYAN)
 
