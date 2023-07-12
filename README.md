@@ -14,6 +14,15 @@
 
 ## What it is
 
+This is a VHDL implementation of the RISC DLX cpu, originally developed by Hennessy and Patterson. 
+The steps for its development were:
+
+- Design
+- Coding
+- Simulation and verification
+- Synthesis
+- Place and Route
+
 ### Why it is a pro version
 
 We decided to implement the multiplication and division instructions. Both the instructions are multi-cycle, this required a modification of the controller and the registers of the pipeline.
@@ -35,6 +44,10 @@ Here is an image of the datapath. The complete overview of the components and so
 ![](doc/images/datapath.png)
 
 ## Controller
+
+Here is an overview of the controller, designed as an hybrid between an FSM and an hardwired
+
+![](doc/images/Controller.png)
 
 ## ISA
 
