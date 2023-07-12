@@ -22,7 +22,7 @@ begin
     -- extended as signed. Otherwise, the immediate16 input is considered: 
 	-- depending on the value of signed_unsigned_bar, the extension
     -- is performed either signed or unsigned.
-	result <= (sixOnes & immediate26) when ((size_16_26_bar = '0') and (immediate26(15) = '1')) else
+	result <= (sixOnes & immediate26) when ((size_16_26_bar = '0') and (immediate26(25) = '1')) else
 			  (sixZeros & immediate26) when ((size_16_26_bar = '0') and (immediate26(25) = '0')) else
 			  (sixteenOne & immediate16) when ((immediate16(15) = '1') and (signed_unsigned_bar = '1')) else
 			  (sixteenZeroes & immediate16);
