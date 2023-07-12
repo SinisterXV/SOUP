@@ -9,8 +9,8 @@
 ## Authors
 
 - Sansone Giacomo, [pcineverdies](https://github.com/pcineverdies)
-- Silvestri Giuseppe [SinisterXV](https://github.com/SinisterXV)
-- Valenza Arianna [ariannavalenza](https://github.com/ariannavalenza)
+- Silvestri Giuseppe, [SinisterXV](https://github.com/SinisterXV)
+- Valenza Arianna, [ariannavalenza](https://github.com/ariannavalenza)
 
 ## What it is
 
