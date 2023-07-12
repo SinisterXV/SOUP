@@ -183,7 +183,7 @@ Example: `beqz rx, imm_16`
 
 Action: `PC = (RF[x] == 0) ? (PC + 4 + imm_16) : PC + 4`
 
-The immediate value is not sign-extended
+The immediate value is sign-extended
 
 ### bnez
 
@@ -195,7 +195,7 @@ Example: `bnez rx, imm_16`
 
 Action: `PC = (RF[x] != 0) ? (PC + 4 + imm_16) : PC + 4`
 
-The immediate value is not sign-extended
+The immediate value is sign-extended
 
 ### j
 
@@ -207,7 +207,7 @@ Example: `j imm_26`
 
 Action: `PC = PC + 4 + imm_26`
 
-The immediate value is not signed extended
+The immediate value is signed extended
 
 ### jal
 
@@ -219,7 +219,7 @@ Example: `jal imm_26`
 
 Action: `PC = PC + 4 + imm_26; RF[31] = PC + 4`
 
-The immediate value is not signed extended
+The immediate value is signed extended
 
 ### lw
 
