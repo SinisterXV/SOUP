@@ -1,0 +1,32 @@
+\chapter{Conclusions}\label{Conclusions}
+
+Several possible improvements can be made to our microprocessor, as we did not have the chance to fully develop all the feasible features of a RISC processor. 
+
+Pipeline optimisation could be a starting point: we did not design units to handle data and control hazards  as we handled the issue via software. 
+However, this is inefficient and proper hardware components should be added: they include a forwarding unit, a stall controller, and a pipeline flush controller.
+They would greatly help to improve the overall performance and usability of the device. 
+Additional upgrades would include adding a Branch History Table or a Branch Target Buffer to perform branch prediction and reduce branch/jump penalties.
+
+Another desirable feature would be floating point execution units, as currently only integer arithmetic is supported.
+
+Optimisation of the critical path is a very important point, since at the moment it's 6.5 \si{\nano\second} due to the 64-bit ripple carry adder inside the multiplier. 
+Possible solutions include: 
+\begin{itemize}
+    \item using a 64-bit P4 adder;
+    \item implementing a 32-bit multiplier instead of a 64-bit one;
+    \item pipelining the multiplier, increasing its throughput.
+\end{itemize}
+
+One more improvement can be implementing power optimisation techniques, such as clock gating, to reduce the power consumption.
+
+In conclusion, the project has been a challenging yet rewarding journey for the team. 
+The effort has been remarkable, as we delved into the intricacies of microprocessor architecture and digital design. 
+Through this project, we acquired skills in complex functionality integration and the implementation of advanced algorithms like the SRT division.
+We have refined our abilities in problem-solving, critical thinking, and collaboration, navigating through a high-complexity design and overcoming obstacles. 
+This project not only provided a platform for applying theoretical knowledge but also fostered a deeper understanding of the intricacies involved in developing complex features. 
+The experience gained throughout this project sets a foundation for further exploration in the field of microprocessor design and development.
+
+
+
+
+

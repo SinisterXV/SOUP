@@ -1,0 +1,32 @@
+\chapter{Introduction}\label{Introduction}
+
+The implementation of a pipelined RISC microprocessor with advanced functionalities is a remarkable feat in the realm of digital design and computer architecture. 
+Our implementation of the DLX microprocessor, made of a controller and a datapath, includes sophisticated components such as a radix-4 Booth multiplier and a radix-4 SRT divider.
+
+The DLX architecture, inspired by the MIPS, is the foundation of our implementation. 
+Its simple instruction set enables efficient execution of complex programs, making it an ideal choice for a wide range of applications. 
+However, the addition of advanced functionalities takes the DLX microprocessor to new heights, making it capable of handling computationally intensive tasks. 
+
+Our processor is a combination of a hardwired control unit and a datapath, working together to execute instructions and perform complex computations. 
+On one hand, the control unit is responsible for generating the control signals that coordinate the operations within the datapath. 
+On the other hand, the datapath is the core processing unit, consisting of arithmetic/logic units, registers and multiplexers. 
+It carries out the actual calculations and manipulations of data under the influence of the control unit. 
+The detailed explanation of the implementation of these components can be found in \autoref{controller_ch} and \autoref{datapathch}.
+
+As for the pipeline, a static one has been implemented and consists of five stages: fetch, decode, execute, memory and write-back. 
+By breaking down each instruction's execution into multiple stages, the pipelined datapath enables the concurrent execution of several instructions in different stages, resulting in high throughput.
+
+The inclusion of a radix-4 SRT divider adds to the microprocessor's capabilities. 
+The SRT division algorithm utilises a combination of shifts, additions and subtractions to perform division operations with exceptional speed and precision. 
+We carefully studied and collected the theory behind it and the results of our work can be found in  \autoref{Chapter_SRT}.
+The employment of a radix-4 algorithm further increases the division efficiency by reducing the number of required iterations.
+The detailed explanation of the implementation can be found in \autoref{Chapter_Impl_Div}.
+
+The radix-4 Booth multiplier integrated into the microprocessor is another noteworthy feature. 
+By employing a combination of shifts and additions/subtractions, the multiplier reduces the number of required intermediate products and minimises the overall latency, quickly computing long multiplications. 
+Its implementation is discussed in  \autoref{Chpater_Impl_mul}. 
+
+An additional feature of our implementation is the inclusion of automated simulation and synthesis scripts, which streamline the design process. 
+These scripts make it easier to verify and validate the processor's functionality and performance. 
+This automation significantly reduces the manual effort required for simulation and synthesis tasks, enabling  the user to focus more on design refinement and optimisation. 
+Further details about the simulation and synthesis automation can be found in \autoref{sim_chap} and \autoref{syn_chap}, respectively.
