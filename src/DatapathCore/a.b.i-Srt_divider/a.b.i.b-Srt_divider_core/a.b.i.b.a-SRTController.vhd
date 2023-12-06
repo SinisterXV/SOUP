@@ -1,3 +1,24 @@
+-- File              : a.b.i.b.a-SRTController.vhd
+-- Authors           : Giacomo Sansone      <s307761@studenti.polito.it> 
+--                   : Giuseppe Silvestri   <s307792@studenti.polito.it>
+--                   : Arianna Valenza      <s317742@studenti.polito.it>
+-- Date              : 17.07.2023
+--
+-- Copyright (c) 2023
+--
+-- Licensed under the Solderpad Hardware License v 2.1 (the "License");
+-- you may not use this file except in compliance with the License, or,
+-- at your option, the Apache License version 2.0.
+-- You may obtain a copy of the License at
+--
+--     https://solderpad.org/licenses/SHL-2.1/
+--
+-- Unless required by applicable law or agreed to in writing, any work
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -50,7 +71,7 @@ begin
 
 		case (currState) is
 			when idle =>
-				if (startDiv = '1') then
+				if (startDiv = '1' and invalid_division = '0') then
 					nextState <= preProc;
 				end if;
 
@@ -67,7 +88,9 @@ begin
 				nextCount <= to_unsigned(NBIT/4, CNTWIDTH);
 
 			when divide =>
-				if (currCount = 0) then
+				if (invalid_division = '1') then
+					nextState <= idle;
+				elsif (currCount = 0) then
 					if (A_MSB = '1') then
 						nextState <= correctSign;
 					else

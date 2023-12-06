@@ -1,3 +1,24 @@
+-- File              : a.b.i.b.b-SRTWrapper.vhd
+-- Authors           : Giacomo Sansone      <s307761@studenti.polito.it> 
+--                   : Giuseppe Silvestri   <s307792@studenti.polito.it>
+--                   : Arianna Valenza      <s317742@studenti.polito.it>
+-- Date              : 17.07.2023
+--
+-- Copyright (c) 2023
+--
+-- Licensed under the Solderpad Hardware License v 2.1 (the "License");
+-- you may not use this file except in compliance with the License, or,
+-- at your option, the Apache License version 2.0.
+-- You may obtain a copy of the License at
+--
+--     https://solderpad.org/licenses/SHL-2.1/
+--
+-- Unless required by applicable law or agreed to in writing, any work
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -9,6 +30,7 @@ entity SRTWrapper is
 		 dividend: 		   	in  std_logic_vector(NBIT - 1 downto 0);
 		 divisor: 		   	in  std_logic_vector(NBIT - 1 downto 0);
 		 startDiv:			in  std_logic;
+         doneDiv:           in  std_logic;
 		 signedUnsignedbar: in  std_logic; --if 0, dividend is unsigned, else it's signed
 		 negResult_ld:	   	in  std_logic;
 		 shift_amount_ld: 	in  std_logic;
@@ -65,6 +87,9 @@ architecture MIXED of SRTWrapper is
 	signal currShiftAmount, nextShiftAmount: std_logic_vector(shift_amount_length - 1 downto 0); --shift amount register declaration
 	signal changeDividendSign, changeDivisorSign: std_logic; --mux selection signals: if 1, the operand is negative and needs to be made positive (by complementing it)
 	signal shift_amount: std_logic_vector(shift_amount_length - 1 downto 0);
+
+	signal invalid_division_unsigned: std_logic;
+	signal invalid_division_signed: std_logic;
 begin
 	RegProc: process(clk)
 	begin
@@ -83,7 +108,7 @@ begin
 	twosCompBlock_2: twosCompBlock Generic Map (NBIT => NBIT) Port Map (A => divisor, Z => divisorComplement); --compute 2's complement of divisor
 
 	changeDividendSign <= signedUnsignedbar and dividend(NBIT - 1); --compute dividend selection signal
-	changeDivisorSign <= signedUnsignedbar and divisor(NBIT - 1); --compute divisor selection signal
+	changeDivisorSign <= signedUnsignedbar and divisor(NBIT / 2 - 1); --compute divisor selection signal
 
 	dividendMux <= dividend when (changeDividendSign = '0') else
 				   dividendComplement;
@@ -115,16 +140,38 @@ begin
 	remainder <= resizedSRTremainder when (currNegResult(0) = '0') else
 				 remainderComplement;
 
-	ComparatorLogic: process(dividendMux, divisorMux)
+	invalid_div_signed_logic: process(doneDiv, currNegResult, SRTquotient)
+        variable two_to_N_minus_1 : std_logic_vector(NBIT/2 - 1 downto 0);
+	begin
+        two_to_N_minus_1 := "01" & halfNZeroes(NBIT/2 - 3 downto 0);
+		if ((unsigned(SRTquotient) >= unsigned(two_to_N_minus_1)) and
+            (currNegResult(1) = '0') and
+			(signedUnsignedBar = '1') and
+            (doneDiv = '1')) then
+            invalid_division_signed <= '1';
+		elsif ((unsigned(SRTquotient) > unsigned(two_to_N_minus_1)) and
+            (currNegResult(1) = '1') and
+			(signedUnsignedBar = '1') and
+            (doneDiv = '1')) then
+            invalid_division_signed <= '1'; 
+        else
+            invalid_division_signed <= '0';
+        end if;
+	end process invalid_div_signed_logic;
+
+
+	ComparatorLogic: process(dividendMux, divisorMux, startDiv)
 		variable leftShiftedDivisor: std_logic_vector(NBIT - 1 downto 0);
 	begin
 		leftShiftedDivisor := divisorMux(NBIT/2 - 1 downto 0) & halfNZeroes;
 		if (unsigned(dividendMux) >= unsigned(leftShiftedDivisor)) then
-			invalid_division <= '1' and startDiv;
+			invalid_division_unsigned <= '1' and startDiv;
 		else
-			invalid_division <= '0' and startDiv;
+			invalid_division_unsigned <= '0';
 		end if;
 	end process ComparatorLogic;
+
+    invalid_division <= invalid_division_signed or invalid_division_unsigned;
 
   	RegistersCombLogic: process(changeDividendSign, changeDivisorSign, currNegResult, negResult_ld, shift_amount, currShiftAmount, shift_amount_ld)
 	begin
