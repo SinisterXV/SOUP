@@ -1,3 +1,31 @@
+-- 
+--  File              : register_file.vhd
+--
+--  Description       : Register file for the dlx.
+--						There are 2 reading ports and 1 writing port.
+--						Writing is synchronous, while reading is asynchronous.	
+--						When write31 is high, the 31th register is used as 
+--						destination register. This operation has priority 
+--						over any other writing operation.
+--
+--  Author            : Giacomo Sansone <s307761@studenti.polito.it>
+--
+--  Date              : 20.10.2023
+--  Last Modified Date: 20.10.2023
+--
+--  Copyright (c) 2023
+--
+--  Licensed under the Apache License, Version 2.0 (the "License");
+--  you may not use this file except in compliance with the License.
+--  You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+--  Unless required by applicable law or agreed to in writing, software
+--  distributed under the License is distributed on an "AS IS" BASIS,
+--  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--  See the License for the specific language governing permissions and
+--  limitations under the License.
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -49,6 +77,8 @@ begin
 	begin
 		if((enable = '1') and (rd1 = '1')) then
 			out1 <= registers(to_integer(unsigned(add_rd1)));
+		else
+			out1 <= (others => '0');
 		end if;
 	end process readproc1;
 
@@ -57,12 +87,14 @@ begin
 	begin
 		if((enable = '1') and (rd2 = '1')) then
 			out2 <= registers(to_integer(unsigned(add_rd2)));
+		else
+			out2 <= (others => '0');
 		end if;
 	end process readproc2; 
 
 
     -- Write operation
-	writeproc: process(registers, reset, enable, wr, write31, add_wr, datain, not_clk)
+	writeproc: process(not_clk)
 	begin
 		if(rising_edge(not_clk)) then
             -- synchronous reset
