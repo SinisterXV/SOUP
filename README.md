@@ -31,7 +31,7 @@ The multiplication is implemented using the booth algorithm, in its radix-4 vers
 
 The division is implemented using a radix-4 SRT algorithm with minimum redundant digit-set. 
 This is the same algorithm which failed in the FPU of Pentium processors in 1994.
-Since there was available *simple* documentation about this algorithm, we wrote it by ourselves. 
+Since there was no *simple* available documentation about this algorithm, we wrote it by ourselves. 
 
 We implemented other simple instructions which were not required for the base version of the cpu (xnor, xnori, nand, nandi, nor, nori, sgt, sgti, slt, slti, ret).
 
