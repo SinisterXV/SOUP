@@ -22,7 +22,7 @@ architecture STRUCTURAL of dlx is
 	signal pc_enable           : std_logic;
 	signal control_word        : std_logic_vector(32 downto 0);
 begin
-	cntrl : entity work.controller
+	cntrl : entity work.dlx_controller
 		port map
 		(
 			clk                 => clk,
