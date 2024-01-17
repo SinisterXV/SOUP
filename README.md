@@ -1,4 +1,4 @@
-# SOUP - a ***S**oup*er **U**nbeatable **O**ptimized **P**rocessor
+# SOUP - a ***S**oup*er **O**ptimized **U**nbeatable **P**rocessor
 
 ## Logo
 
